@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script language="javascript" type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="../style/style.css" type="text/css">
 		
 		<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
@@ -17,20 +17,20 @@
 		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>	
 	</head>
 	<body>
-		<div id="pagina">
-			<div id="bordeTOP"></div>
-			
-			<div id="contaiener">
-				<div id="cabecera">
-					<button id="prueba" class="btn btn-primary" onclick="mostrarDatosUsuario()">Mostrar usuario</button>					
-				</div>
-				
-				<div id="content">
-					
-				</div>
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" href="#">Aprende Idiomas</a>
 			</div>
-			
-			<div id="bordeBOT"></div>
+			<ul class="nav navbar-nav">
+			  <li><a href="../index.html">Home</a></li>
+			  <li><a href="./buscarAnuncio.html">Buscar Anuncio</a></li>
+			  <li class="active"><a href="#">Mi perfil</a></li>
+			</ul>
+		  </div>
+		</nav>	
+		<div id="container">
+			<button id="prueba" class="btn btn-primary" onclick="mostrarDatosUsuario()">Mostrar usuario</button>	
 		</div>
 	</body>
 </html>

@@ -1,0 +1,1 @@
+<button id="prueba" class="btn btn-primary" onclick="mostrarDatosUsuario()">Mostrar usuario</button>	
