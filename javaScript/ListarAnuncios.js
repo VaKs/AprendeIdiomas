@@ -1,5 +1,6 @@
 $( document ).ready(function() {
 
+
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		var output="";
 	
@@ -19,8 +20,9 @@ $( document ).ready(function() {
 				var nivel = idiomas[i].Nivel;
 				var coste = idiomas[i].coste;
 
+				var idIdioma="#"+dniProfe;
 				anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
-					anuncioOutput = anuncioOutput+"<input type='radio' name="+dniProfe+">";
+					anuncioOutput = anuncioOutput+"<input type='radio' class='idioma_"+dniProfe+"' value="+idioma+">";
 					anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 				anuncioOutput = anuncioOutput+"</label>";
 				//anuncioOutput = anuncioOutput+"<p>idioma: "+idioma+" nivel: "+nivel+" precio: "+coste+" tokens</p>";
@@ -28,7 +30,7 @@ $( document ).ready(function() {
 			var horarios=anuncioSnapshot.val().horario;
 			anuncioOutput = anuncioOutput+"<p>Horario disponible:</p>";
 			anuncioOutput = anuncioOutput+"<div class='custom-select' style='width:200px;'>";
-			anuncioOutput = anuncioOutput+"<select>";
+			anuncioOutput = anuncioOutput+"<select class='horario_"+dniProfe+"'>";
 				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
 			for(var i in horarios) {
 				var estado = horarios[i].estado;
@@ -36,18 +38,23 @@ $( document ).ready(function() {
 				var hora = horarios[i].hora;
 				
 				anuncioOutput = anuncioOutput+"<option value="+fecha+"-"+hora+">"+fecha+" a las "+hora+"</option>";
-				
-				//anuncioOutput = anuncioOutput+"<p>Horario: "+fecha+" - "+hora+", estado: "+estado+"</p>";
 			}
 				anuncioOutput = anuncioOutput+"</select>";
 			anuncioOutput = anuncioOutput+"</div>";
-			
+			anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\")'> Solicitar Clase </button>";
 			anuncioOutput = anuncioOutput+"</div><br>";
-			output=output+anuncioOutput;
+			output=output+anuncioOutput;			
 		});
 		document.getElementById('container').innerHTML=output;	
 		buildSelectBox();
+		
 
 	});
+	
+	
+
 
 });
+function solicitarClase(profe){
+	//TODO
+}
