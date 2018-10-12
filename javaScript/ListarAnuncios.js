@@ -22,7 +22,7 @@ $( document ).ready(function() {
 
 				var idIdioma="#"+dniProfe;
 				anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
-					anuncioOutput = anuncioOutput+"<input type='radio' class='idioma_"+dniProfe+"' value="+idioma+">";
+					anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value="+idioma+">";
 					anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 				anuncioOutput = anuncioOutput+"</label>";
 				//anuncioOutput = anuncioOutput+"<p>idioma: "+idioma+" nivel: "+nivel+" precio: "+coste+" tokens</p>";
