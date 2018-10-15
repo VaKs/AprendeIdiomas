@@ -16,6 +16,10 @@ body{
 	border-radius: 15px 15px 15px 15px;
 }
 
+#premium{
+	background-color:pink;
+}
+
 .btn.btn-info {
     color: #ffffff;
     background-color: #5BC0DE;

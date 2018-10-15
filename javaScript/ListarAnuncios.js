@@ -2,15 +2,15 @@ $( document ).ready(function() {
 
 
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
-		var output="";
+		
 	
+		document.getElementById('container').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
 		snapshot.forEach(anuncioSnapshot => {
-			
+			var output="";
 			var dniProfe = anuncioSnapshot.key;
-			
 			var anuncioOutput = "<div id="+dniProfe+" class='anuncio'>";
-			
 			var valor = anuncioSnapshot.val();
+			var premium = anuncioSnapshot.val().premium;
 			
 			anuncioOutput =anuncioOutput+ "<h3>Profesor: <a href='#'>"+valor.nombre+"</a></h3> ";
 			
@@ -43,9 +43,22 @@ $( document ).ready(function() {
 			anuncioOutput = anuncioOutput+"</div>";
 			anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\")'> Solicitar Clase </button>";
 			anuncioOutput = anuncioOutput+"</div><br>";
-			output=output+anuncioOutput;			
+			output=output+anuncioOutput;
+			
+			if(premium){
+				var listaPremium = document.getElementById('premium').innerHTML;
+				document.getElementById('premium').innerHTML=listaPremium+output;
+				
+			} else {
+				
+				var listaPremium = document.getElementById('noPremium').innerHTML;
+				document.getElementById('noPremium').innerHTML=listaPremium+output;
+				
+			}
+			
+			
+		
 		});
-		document.getElementById('container').innerHTML=output;	
 		buildSelectBox();
 		
 
