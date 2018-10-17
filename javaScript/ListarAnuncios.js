@@ -76,7 +76,11 @@ function solicitarClase(profe){
 	var output = {
 		descripcion : "ingles",
 		estado : "pendiente",
-		idioma : "ingles";,
+		fecha : "22/02/2222",
+		hora : "22:22",
+		idioma : "ingles",
+		solicitante : "11111111";
+		
 	};
 			
 			
