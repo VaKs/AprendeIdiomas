@@ -1,6 +1,5 @@
 $( document ).ready(function() {
 
-
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		
 	
