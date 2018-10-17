@@ -69,5 +69,36 @@ $( document ).ready(function() {
 
 });
 function solicitarClase(profe){
-	//TODO
+	
+	
+	//firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
+	
+	var output = {
+		descripcion : "ingles",
+		estado : "pendiente",
+		idioma : "ingles";,
+	};
+			
+			
+			
+	firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
+			
+			
+
+	
 }
+
+/**function comprobar()
+{
+   var tokens = document.formu.tokens.value;
+   
+
+   if (tokens < 10)
+   {
+      alert("no tienes suficientes tokens");
+      return false;
+   }
+   
+   alert("Solicitud enviada correctamente");
+   return true;
+}**//

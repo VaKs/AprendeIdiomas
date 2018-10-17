@@ -13,7 +13,7 @@ function mostrarDatosUsuario(){
 		var output="<p> Nombre: "+ usuarioActual.nombre+" </p>";
 		output=output+"<p> Apellido: "+ usuarioActual.apellido+" </p>";
 		document.getElementById('container').innerHTML=output;
-	});
+	 });
 	
 }
 
