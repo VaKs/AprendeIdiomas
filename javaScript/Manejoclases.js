@@ -1,5 +1,5 @@
 
-var alumno, decision
+var alumno, decision;
 function manejador_clase(){
 	
 	swal("¿Desea aceptar la clase?", {
@@ -34,15 +34,20 @@ function manejador_clase(){
   }
 
 function notificar(decision){
-	//container3 debera estar en perfil de alumno
-	if(decision == true){
-		var output="<p> La clase X ha sido aceptada </p>";	
-		document.getElementById('container3').innerHTML=output;
+	
+	if(decision){
+		var output="<p> La clase de X ha sido aceptada </p>";
+		var notificacion = document.getElementById('container1').innerHTML;
+		document.getElementById('container1').innerHTML= notificacion + output;
+			
 	}else{
-		var output="<p> La clase X ha sido rechazada </p>";	
-		document.getElementById('container3').innerHTML=output;
+		var output="<p> La clase de X ha sido rechazada </p>";	
+		var notificacion = document.getElementById('container1').innerHTML;		
+		document.getElementById('container1').innerHTML= notificacion + output;
 		
 	}
 	
 	
 }
+
+
