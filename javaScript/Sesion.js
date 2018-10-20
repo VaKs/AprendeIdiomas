@@ -4,7 +4,6 @@ function SignIn(){
 	localStorage['dni']="12345678A";
 	window.location.href = "./web/perfilUsuario.html";
 	//document.getElementById('container').load("../web/perfilUsuario.txt"); 
-	
 }
 
 function mostrarDatosUsuario(){
