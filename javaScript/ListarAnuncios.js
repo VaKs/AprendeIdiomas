@@ -2,6 +2,7 @@ $( document ).ready(function() {
 
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		var cantidad_anuncios = 0;
+
 		document.getElementById('container').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
 		snapshot.forEach(anuncioSnapshot => {
 			if(cantidad_anuncios<=20){
@@ -21,7 +22,9 @@ $( document ).ready(function() {
 
 					var idIdioma="#"+dniProfe;
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
+
 						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value="+idioma+"'><input type='hidden' id="+dniProfe+i+" value="+nivel+"'>";
+					
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
 				}
@@ -29,7 +32,7 @@ $( document ).ready(function() {
 				anuncioOutput = anuncioOutput+"<p>Horario disponible:</p>";
 				anuncioOutput = anuncioOutput+"<div class='custom-select' style='width:200px;'>";
 				anuncioOutput = anuncioOutput+"<select id = 'horario_"+dniProfe+"' class='horario_"+dniProfe+"'>";
-					anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
+				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
 				for(var i in horarios) {
 					var estado = horarios[i].estado;
 					var fecha = horarios[i].fecha;
@@ -37,7 +40,7 @@ $( document ).ready(function() {
 					
 					anuncioOutput = anuncioOutput+"<option value="+fecha+"-"+hora+">"+fecha+" a las "+hora+"</option>";
 				}
-					anuncioOutput = anuncioOutput+"</select>";
+				anuncioOutput = anuncioOutput+"</select>";
 				anuncioOutput = anuncioOutput+"</div>";
 				anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\")'> Solicitar Clase </button>";
 				anuncioOutput = anuncioOutput+"</div><br>";
@@ -81,9 +84,6 @@ function solicitarClase(profe){
 			}
 		}
 		
-	/*var botonid = "btn-"+profe;
-	document.getElementById(boton).disabled=false;*/
-	
 	
 	var fechaId = "horario_"+profe;
 	var selectBox = document.getElementById(fechaId);
