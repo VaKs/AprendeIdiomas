@@ -42,7 +42,7 @@ function promocionarUsuario(){
 
 function mostrarPremium() {
 	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
-		if(usuarioActual.premium) {
+		if(snapshot.val().premium) {
 			var img = document.createElement('IMG');
 			img.setAttribute('src', "../img/premium.jpg");
 			img.setAttribute('height', "auto");
