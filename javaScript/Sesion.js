@@ -1,4 +1,3 @@
-
 var usuarioActual;
 
 function SignIn(){
@@ -32,11 +31,47 @@ function promocionarUsuario(){
 		if(res >= 5){
 				firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
 				firebase.database().ref('Anuncios').child(localStorage['dni']).child('premium').set(true);
+				firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
 				alert("Tu anuncio ha sido promocionado.");
 
 		} else {
 				alert("No tienes suficientes tokens.");
 		}
+	});
+}
+
+function mostrarPremium() {
+	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
+		if(usuarioActual.premium) {
+			var img = document.createElement('IMG');
+			img.setAttribute('src', "../img/premium.jpg");
+			img.setAttribute('height', "auto");
+			img.setAttribute('width', "10%");
+			var div = document.getElementById('premium');
+			div.appendChild(img);
+		}
+	});
+}
+
+function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
+	let tokensEmisor = new Promise((resolve, reject) => {
+		firebase.database().ref('Usuarios').child(dniEmisor).on('value',function(snapshot) {
+			resolve(parseInt(snapshot.val().tokens));
+		});
+	});
+
+	tokensEmisor.then((res) => {
+		firebase.database().ref('Usuarios').child(dniEmisor).child('tokens').set(res - cantidad);
+	});
+
+	let tokensReceptor = new Promise((resolve, reject) => {
+		firebase.database().ref('Usuarios').child(dniReceptor).on('value',function(snapshot) {
+			resolve(parseInt(snapshot.val().tokens));
+		});
+	});
+
+	tokensReceptor.then((res) => {
+		firebase.database().ref('Usuarios').child(dniReceptor).child('tokens').set(res + cantidad);
 	});
 }
 

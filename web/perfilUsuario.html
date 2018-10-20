@@ -21,7 +21,7 @@
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<meta name="tipo_contenido"  content="text/html;" http-equiv="content-type" charset="utf-8">
 	</head>
-	<body>
+	<body onload="mostrarPremium()">
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 			<div class="navbar-header">
@@ -37,7 +37,8 @@
 		<div id="container">
 			<button id="prueba" class="btn btn-primary" onclick="mostrarDatosUsuario()">Mostrar usuario</button>
 			<button id="classtest" class="btn btn-primary" onclick="manejador_clase()">Manejar clases</button>
-			<button id="classtest" class="btn btn-primary" onclick="promocionarUsuario()">Promocionar anuncio</button><br>
+			<button id="classtest" class="btn btn-primary" onclick="promocionarUsuario()">Promocionar Usuario</button><br>
+			<div id="premium" align="right"></div>
 
 			<div id="container1">	
 			  <p> Notificaciones: </p><br>
