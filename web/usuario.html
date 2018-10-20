@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="../style/style.css" type="text/css">
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<script language="javascript" type="text/javascript" src="../javaScript/CustomSelectBox.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/PerfilUsuario.js"></script>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>	
+		
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<meta name="tipo_contenido"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" href="#">Aprende Idiomas</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="../index.html">Home</a></li>
+			  <li><a href="./buscarAnuncio.html">Buscar Anuncio</a></li>
+			  <li><a href="">Mi perfil</a></li>
+			</ul>
+		  </div>
+		</nav>	
+
+		<div id="container">
+			<div class="panel panel-success">
+				<div class="panel-heading"> <i class="fa fa-address-card-o"></i> <strong>Perfil</strong> </div>
+			    <div class="panel-body">
+
+			    	<div class="row">
+					  <div class="col-xs-3 col-md-3">
+					  	<img src="../img/us.png" border="1" alt="Este es el ejemplo de un texto alternativo" width="100%">
+					  </div>
+					  <div class="col-xs-9 col-md-9">
+					  	</br></br>
+					  	<span id="nombre" style="text-transform: uppercase;color: #337ab7"></span> </br>
+					  	</br>
+					  	<span id="localidad" style="text-transform: uppercase;color: #337ab7"></span> </br>
+					  	</br>
+					  	<strong id="valoracion" style="text-transform: uppercase;color: #d8b500"></strong> </br>
+					  </div>
+					</div>
+
+					</br>
+
+					<div class="panel panel-default">
+					    <div class="panel-body">
+					    	<span id="descripcion"> </span>
+					    </div>
+					 </div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading"> <i class="fa fa-graduation-cap"></i> <strong>Información Academica</strong> </div>
+					    <div class="panel-body">
+
+					    	<div class="row">
+							  <div class="col-xs-12 col-md-12">
+							  	<span id="estudios"></span> </br>
+							  	<span id="idiomas"> </span>
+							  </div>
+							</div>
+
+					    </div>
+					 </div>
+
+					 <div class="panel panel-warning">
+					 	<div class="panel-heading"> <i class="fa fa-commenting-o"></i> <strong>Reseñas</strong> </div>
+					    <div class="panel-body">
+					    	<span id="reseñas"> </span>
+					    </div>
+					 </div>
+
+
+			    </div>
+			 </div>
+		</div>
+	</body>
+</html>
