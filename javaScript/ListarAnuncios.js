@@ -11,8 +11,8 @@ $( document ).ready(function() {
 				var anuncioOutput = "<div id="+dniProfe+" class='anuncio'>";
 				var valor = anuncioSnapshot.val();
 				var premium = anuncioSnapshot.val().premium;
-				
-				anuncioOutput =anuncioOutput+ "<h3>Profesor: <a href='#'>"+valor.nombre+"</a></h3> ";
+        
+        anuncioOutput =anuncioOutput+ "<h3>Profesor: <a onclick='verPerfil(\"" + dniProfe + "\")'>"+valor.nombre+"</a></h3> ";
 				
 				var idiomas = anuncioSnapshot.val().Idiomas;
 				for(var i in idiomas) {
@@ -60,14 +60,11 @@ $( document ).ready(function() {
 			}
 		});
 		buildSelectBox();
-		
 
 	});
 	
-	
-
-
 });
+
 function solicitarClase(profe){
 	
 	var profeid = "idioma_"+profe;
@@ -112,10 +109,9 @@ function solicitarClase(profe){
 		alert("Elija Idioma y fecha");
 	}
 	anunant=profe;
-	}	
-	
+}	
 		
-   
-    
-		
-
+ function verPerfil(param){
+	//pagina +="usuario.html?"+param;
+	location.href="usuario.html?"+param+"";
+}
