@@ -56,7 +56,6 @@ function mostrarPremium() {
 
 
 function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
-	var suficientesTokens;
 	let tokensEmisor = new Promise((resolve, reject) => {
 		firebase.database().ref('Usuarios').child(dniEmisor).on('value',function(snapshot) {
 			resolve(parseInt(snapshot.val().tokens));
@@ -64,16 +63,9 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 	});
 
 	tokensEmisor.then((res) => {
-		if((res - cantidad)>=0){
-			suficientesTokens=true;
-			firebase.database().ref('Usuarios').child(dniEmisor).child('tokens').set(res - cantidad);
-		} else {
-			suficientesTokens=false;
-			alert("El usuario no tiene bastante dinero");
-		}
+		firebase.database().ref('Usuarios').child(dniEmisor).child('tokens').set(res - cantidad);
 	});
 
-	if(suficientesTokens){
 		let tokensReceptor = new Promise((resolve, reject) => {
 			firebase.database().ref('Usuarios').child(dniReceptor).on('value',function(snapshot) {
 				resolve(parseInt(snapshot.val().tokens));
@@ -83,6 +75,14 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 		tokensReceptor.then((res) => {
 			firebase.database().ref('Usuarios').child(dniReceptor).child('tokens').set(res + cantidad);
 		});
-	}
+		
+		var output = new Object();
+		output.descripcion = "Se ha pagado la clase";
+		output.precio = "10";
+		output.receptor = dniReceptor;
+		output.emisor = dniEmisor;
+
+		firebase.database().ref('Usuarios').child(dniEmisor).child('notificaciones').push(output);
+		firebase.database().ref('Usuarios').child(dniReceptor).child('notificaciones').push(output);
 }
 
