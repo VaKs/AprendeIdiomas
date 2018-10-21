@@ -53,6 +53,8 @@ function mostrarPremium() {
 	});
 }
 
+
+
 function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 	let tokensEmisor = new Promise((resolve, reject) => {
 		firebase.database().ref('Usuarios').child(dniEmisor).on('value',function(snapshot) {
