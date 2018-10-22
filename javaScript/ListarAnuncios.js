@@ -92,12 +92,14 @@ function solicitarClase(profe){
 	
 	
 	var output = new Object();
-		output.descripcion = IdiomaNiv;
+		output.descripcion = "Solicitud de clase";
 		output.estado = "pendiente";
 		output.fecha = fechaSol;
 		output.hora = horario;
 		output.idioma = idiomaSele;
 		output.solicitante = dniAlumno;
+		output.tipo = "clase";
+		output.precio = 10; //to do 
 	
 	
 	if((idiomaSele != undefined) && (horario != "")){
@@ -105,13 +107,19 @@ function solicitarClase(profe){
 			firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 			guarda = dniAlumno;
 			alert("Solicitud enviada correctamente");
+			mostrar_boton();
+
 	}else{
 		alert("Elija Idioma y fecha");
 	}
 	anunant=profe;
+	
 }	
 		
  function verPerfil(param){
 	//pagina +="usuario.html?"+param;
 	location.href="usuario.html?"+param+"";
 }
+
+
+
