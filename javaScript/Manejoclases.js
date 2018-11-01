@@ -31,6 +31,7 @@ function aceptar_clase(key){
 		clase.hora = notificacion.hora;
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;
+		clase.profesor = notificacion.profesor;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		

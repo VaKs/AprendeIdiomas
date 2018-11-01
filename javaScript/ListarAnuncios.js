@@ -102,6 +102,7 @@ function solicitarClase(profe){
 		output.hora = horario;
 		output.idioma = idiomaSele;
 		output.solicitante = dniAlumno;
+		output.profesor = profe;
 		output.tipo = "clase";
 		output.precio = 10; //to do 
 	
