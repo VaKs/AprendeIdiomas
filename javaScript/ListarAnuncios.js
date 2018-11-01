@@ -35,7 +35,7 @@ $( document ).ready(function() {
 				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
 				for(var i in horarios) {
 					var estado = horarios[i].estado;
-					var fecha = horarios[i].fecha;
+					var fecha = horarios[i].dia+"/"+horarios[i].mes+"/"+horarios[i].año;
 					var hora = horarios[i].hora;
 					
 					anuncioOutput = anuncioOutput+"<option value="+fecha+"-"+hora+">"+fecha+" a las "+hora+"</option>";
@@ -88,13 +88,17 @@ function solicitarClase(profe){
 	var fechaSol = horario.substring(0,9);
 	var horario = horario.substring(10,15);
 	var dniAlumno = localStorage['dni'];
-	
+	var mes = fechaSol.substring(2, 4);
+	var dia = fechaSol.substring(0, 1);
+	var anyo = fechaSol.substring(5, 9);
 	
 	
 	var output = new Object();
 		output.descripcion = "Solicitud de clase";
 		output.estado = "pendiente";
-		output.fecha = fechaSol;
+		output.dia= dia;
+		output.mes=mes;
+		output.año=anyo;
 		output.hora = horario;
 		output.idioma = idiomaSele;
 		output.solicitante = dniAlumno;

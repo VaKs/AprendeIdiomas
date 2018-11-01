@@ -2,12 +2,15 @@
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="../style/calendario.css" type="text/css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../style/style.css" type="text/css">
 		
 		<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
 		<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
 		<script language="javascript" type="text/javascript" src="../javaScript/Manejoclases.js"></script>
 		<script language="javascript" type="text/javascript" src="../javaScript/PerfilUsuarioActual.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/calendario.js"></script>
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -41,13 +44,8 @@
 			<button id="classtest" class="btn btn-primary" onclick="promocionarUsuario()">Promocionar Usuario</button><br>
 			<button id="classtest" class="btn btn-primary" onclick="transaccionTokens('12345678A', '87654321Z', 10)">Pagar Clase</button><br>
 			<div id="premium" align="right"></div>
-			
-			<div id="container1">	
-			
-			  <p> Notificaciones: </p><br>
-				
-				
-			</div>
+			<div id="calendario"></div> 
+			<div id="container1"></div> 
 			
 		</div>
 	
