@@ -1,7 +1,5 @@
 function calendario(paramMes,paramYear,selection){
-alert("0");
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value',function(snapshot) {
-alert("1");
 		tabla="";
 		fecha=new Date();
 		dias = ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
@@ -34,15 +32,15 @@ alert("1");
 		// se crea un array cn las clases
 		var clases= [];
 		snapshot.forEach(claseSnapshot => {
-alert("2");
 			var clase = claseSnapshot.val();
 			// se le suma 1 al mes porque en la lógica del calendario van de 0 a 11
-			if((clase.mes==mes+1)&&(clase.año==year)){
+			if((clase.mes==mes+1)&&(clase.anyo==year)){
 				clases.push(clase);
 			}
 			
 		});
 		
+
 
 		diaSem = fecha.getDay();
 		numDia = fecha.getDate();
@@ -85,17 +83,7 @@ alert("2");
 		// Escribir los dias en la tabla
 		for (a=1;a<=cantDiasMes;) {
 			tabla=(tabla+"<tr>");
-			
-			
-			for (c in clases) {
-				if(clases[c].dia==a){
-					if(clases[c].profesor==localStorage['dni']){
-						doyClase=true;
-					}else{
-						reciboClase=true;
-					}
-				}
-			} 
+			 
 			for(i=0;i<7;i++){
 				if(a>=(cantDiasMes+1)){}
 				else{
@@ -103,36 +91,43 @@ alert("2");
 						tabla=(tabla+"<td> </td>");
 					}
 					empezar=0;
-					if((i==5)||(i==6)){
-						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
-							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
-						}
-						else{
-							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase'>"+a+"</td>");
-								doyClase=false;
-							}else if(reciboClase){
-								tabla=(tabla+"<td id='reciboClase'>"+a+"</td>");
-								reciboClase=false;
-							} 
-							else {
-								tabla=(tabla+"<td id='finDe'>"+a+"</td>");
+					
+					// se da clase hoy?
+					for (c=0;c<clases.length;c++) {
+						if(clases[c].dia==a){
+							if(clases[c].profesor==localStorage['dni']){
+								doyClase=true;
+							}else{
+								reciboClase=true;
 							}
 						}
 					}
-					else{
+					// escribe los dias
+					if((i==5)||(i==6)){
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
 							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
-						}
-						else{
+						}else{
 							if(doyClase) {
 								tabla=(tabla+"<td id='doyClase'>"+a+"</td>");
 								doyClase=false;
 							}else if(reciboClase){
 								tabla=(tabla+"<td id='reciboClase'>"+a+"</td>");
 								reciboClase=false;
-							} 
-							else {
+							}else {
+								tabla=(tabla+"<td id='finDe'>"+a+"</td>");
+							}
+						}
+					}else{
+						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
+							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
+						}else{
+							if(doyClase) {
+								tabla=(tabla+"<td id='doyClase'>"+a+"</td>");
+								doyClase=false;
+							}else if(reciboClase){
+								tabla=(tabla+"<td id='reciboClase'>"+a+"</td>");
+								reciboClase=false;
+							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
 							}
 						}

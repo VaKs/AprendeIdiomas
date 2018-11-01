@@ -27,7 +27,7 @@ function aceptar_clase(key){
 		clase.dnialumno = notificacion.solicitante;
 		clase.dia = notificacion.dia;
 		clase.mes = notificacion.mes;
-		clase.año = notificacion.año;
+		clase.anyo = notificacion.año;
 		clase.hora = notificacion.hora;
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;
@@ -36,7 +36,7 @@ function aceptar_clase(key){
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		
 		var notificacionAceptacion = new Object();
-		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.fecha+"-"+notificacion.hora;
+		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+"-"+notificacion.hora;
 		
 		notificarUsuario(notificacion.solicitante,notificacionAceptacion);
 	});
