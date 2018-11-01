@@ -1,6 +1,7 @@
 function calendario(paramMes,paramYear,selection){
-
+alert("0");
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value',function(snapshot) {
+alert("1");
 		tabla="";
 		fecha=new Date();
 		dias = ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
@@ -11,28 +12,29 @@ function calendario(paramMes,paramYear,selection){
 		 year=paramYear;
 		}
 		else{
-		if(paramMes){
-			mes = mes+paramMes;
-			if(paramYear){
-				year = year+paramYear;
+			if(paramMes){
+				mes = mes+paramMes;
+				if(paramYear){
+					year = year+paramYear;
+				}
+			}
+			else{
+				year = fecha.getFullYear();
+				mes = fecha.getMonth();
+			}
+			if(mes<0){
+				mes=11;
+				year=year-1;
+			}
+			if(mes>11){
+				mes=0;
+				year=year+1;
 			}
 		}
-		else{
-			year = fecha.getFullYear();
-			mes = fecha.getMonth();
-		}
-		if(mes<0){
-			mes=11;
-			year=year-1;
-		}
-		if(mes>11){
-			mes=0;
-			year=year+1;
-		}
-		}
 		// se crea un array cn las clases
-		var clases;
+		var clases= [];
 		snapshot.forEach(claseSnapshot => {
+alert("2");
 			var clase = claseSnapshot.val();
 			// se le suma 1 al mes porque en la lógica del calendario van de 0 a 11
 			if((clase.mes==mes+1)&&(clase.año==year)){
@@ -133,7 +135,6 @@ function calendario(paramMes,paramYear,selection){
 							else {
 								tabla=(tabla+"<td>"+a+"</td>");
 							}
-						}
 						}
 					}
 					a++;

@@ -1,7 +1,8 @@
 function iniciar_perfil(){
 	mostrarPremium();
 	listar_notificaciones();
-	calendario();
+alert("0.0");
+	calendario(1,2,false);
 	
 	
 }
