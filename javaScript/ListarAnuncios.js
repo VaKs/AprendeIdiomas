@@ -23,7 +23,7 @@ $( document ).ready(function() {
 					var idIdioma="#"+dniProfe;
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
 
-						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value="+idioma+"'><input type='hidden' id="+dniProfe+i+" value="+nivel+"'>";
+						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value='"+idioma+"'><input type='hidden' id="+dniProfe+i+" value="+nivel+"'>";
 					
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
@@ -104,6 +104,7 @@ function solicitarClase(profe){
 		output.solicitante = dniAlumno;
 		output.profesor = profe;
 		output.tipo = "clase";
+		output.nombreSolicitante=localStorage['nombre'];
 		output.precio = 10; //to do 
 	
 	
@@ -122,7 +123,6 @@ function solicitarClase(profe){
 }	
 		
  function verPerfil(param){
-	//pagina +="usuario.html?"+param;
 	location.href="usuario.html?"+param+"";
 }
 

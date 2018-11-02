@@ -2,8 +2,12 @@ var usuarioActual;
 
 function SignIn(){
 	localStorage['dni']="12345678A";
-	window.location.href = "./web/perfilUsuario.html";
-	//document.getElementById('container').load("../web/perfilUsuario.txt"); 
+	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
+		usuarioActual=snapshot.val();
+		localStorage['nombre']=usuarioActual.nombre;
+	
+		window.location.href = "./web/perfilUsuario.html";
+	});
 	
 }
 

@@ -32,6 +32,7 @@ function aceptar_clase(key){
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;
 		clase.profesor = notificacion.profesor;
+		clase.nombreSolicitante=notificacion.nombreSolicitante;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		
@@ -39,6 +40,7 @@ function aceptar_clase(key){
 		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+"-"+notificacion.hora;
 		
 		notificarUsuario(notificacion.solicitante,notificacionAceptacion);
+		calendario();
 	});
 }
 

@@ -1,4 +1,6 @@
+var clases= [];
 function calendario(paramMes,paramYear,selection){
+	clases= [];
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value',function(snapshot) {
 		tabla="";
 		fecha=new Date();
@@ -29,8 +31,7 @@ function calendario(paramMes,paramYear,selection){
 				year=year+1;
 			}
 		}
-		// se crea un array cn las clases
-		var clases= [];
+		// Se introducen las clases de este mes en el array clases
 		snapshot.forEach(claseSnapshot => {
 			var clase = claseSnapshot.val();
 			// se le suma 1 al mes porque en la lógica del calendario van de 0 a 11
@@ -105,13 +106,21 @@ function calendario(paramMes,paramYear,selection){
 					// escribe los dias
 					if((i==5)||(i==6)){
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
-							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
-						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase'>"+a+"</td>");
+								tabla=(tabla+"<td id='hoy' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
 								doyClase=false;
 							}else if(reciboClase){
-								tabla=(tabla+"<td id='reciboClase'>"+a+"</td>");
+								tabla=(tabla+"<td id='hoy' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
+								reciboClase=false;
+							}else {
+								tabla=(tabla+"<td id='hoy'>"+a+"</td>");
+							}
+						}else{
+							if(doyClase) {
+								tabla=(tabla+"<td id='doyClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
+								doyClase=false;
+							}else if(reciboClase){
+								tabla=(tabla+"<td id='reciboClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
 								reciboClase=false;
 							}else {
 								tabla=(tabla+"<td id='finDe'>"+a+"</td>");
@@ -122,10 +131,10 @@ function calendario(paramMes,paramYear,selection){
 							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
 						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
 								doyClase=false;
 							}else if(reciboClase){
-								tabla=(tabla+"<td id='reciboClase'>"+a+"</td>");
+								tabla=(tabla+"<td id='reciboClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
 								reciboClase=false;
 							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
@@ -140,6 +149,35 @@ function calendario(paramMes,paramYear,selection){
 		}
 		tabla=(tabla+"</table>");
 		document.getElementById("calendario").innerHTML=tabla;
-		selection=false;
+		selection=false;		
 	});
+}
+
+function mostrarInformacionClase(dia){
+	var td=document.getElementById("calInfo");
+	var output="<ul>";
+	for (c=0;c<clases.length;c++) {
+		if(clases[c].dia==dia){
+			if(clases[c].profesor==localStorage['dni']){
+				output=output+"<li>"+clases[c].hora+": Dar clase de "+clases[c].idioma+" a "+clases[c].nombreSolicitante+"</li>";
+			}else{
+				output=output+"<li>"+clases[c].hora+": Recibir clase de "+clases[c].idioma+" a "+clases[c].nombreSolicitante+"</li>";
+			}
+		}
+	}
+	output=output+"</ul>";
+	sigueme();
+	td.innerHTML=output;
+}
+function borrarInformacionClase(){
+	document.getElementById("calInfo").innerHTML="";
+}
+function sigueme(){
+//Capto las coordenads del puntero.
+var x = window.event.x;
+var y = window.event.y;
+
+//Y se las coloco al div.
+document.getElementById("calInfo").style.left = x + "px";
+document.getElementById("calInfo").style.top = y + "px";
 }

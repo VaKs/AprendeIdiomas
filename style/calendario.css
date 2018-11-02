@@ -1,39 +1,47 @@
 #calendario{
-float:right;
+	float:right;
 }
 
 
 table{
-background-color:#eaeaea;
-border-collapse: separate;
-border-spacing: 5px;
-text-align:center;
-height:250px;
-width:250px;
+	background-color:#eaeaea;
+	border-collapse: separate;
+	border-spacing: 5px;
+	text-align:center;
+	height:250px;
+	width:250px;
+}
+#calInfo{
+	width:250px;
+	z-index: 99;
+	position: absolute;
+	border-radius: 15px 15px 15px 15px;
+	background-color:#4abf2f;
+	color:#ffffff;
 }
 #cambiar a{
-color:#ffffff;
-text-decoration: none;
+	color:#ffffff;
+	text-decoration: none;
 }
 #cabeza{
-background-color:#4c4c4c;
-color:#ffffff;
+	background-color:#4c4c4c;
+	color:#ffffff;
 }
 #diasSema{
-background-color:#c3c3c3;
+	background-color:#c3c3c3;
 }
 #finDe{
-color:#1cc9f4;
+	color:#1cc9f4;
 }
 #hoy{
-color:#ffffff;
-background-color:#4c4c4c;
+	color:#ffffff;
+	background-color:#4c4c4c;
 }
 #doyClase{
-color:#ffffff;
-background-color:#0073FF;
+	color:#ffffff;
+	background-color:#0073FF;
 }
 #reciboClase{
-color:#ffffff;
-background-color:#18C200;
+	color:#ffffff;
+	background-color:#f29532;
 }
