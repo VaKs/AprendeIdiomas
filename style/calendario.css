@@ -1,11 +1,21 @@
 #calendario{
 	float:right;
 }
+.calendario{
+	height:250px;
+	width:250px;
+	float:right;
+	overflow: auto;
+}
+.container{
+	height:20px;
+	width:400px;
+	margin-left:0px
+}
 
 
 table{
-	background-color:#eaeaea;
-	border-collapse: separate;
+	border-collapse:collapse ;
 	border-spacing: 5px;
 	text-align:center;
 	height:250px;

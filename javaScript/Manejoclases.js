@@ -6,7 +6,7 @@ function listar_notificaciones(){
 			var notificacion = notificacionSnapshot.val();
 			output =output+ "<li>"+ notificacion.descripcion;
 			if(notificacion.tipo == "clase"){
-				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
+				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
 				"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
 				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button>";
 			}
@@ -27,7 +27,7 @@ function aceptar_clase(key){
 		clase.dnialumno = notificacion.solicitante;
 		clase.dia = notificacion.dia;
 		clase.mes = notificacion.mes;
-		clase.anyo = notificacion.año;
+		clase.anyo = notificacion.anyo;
 		clase.hora = notificacion.hora;
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;

@@ -11,6 +11,8 @@ $( document ).ready(function() {
 				var anuncioOutput = "<div id="+dniProfe+" class='anuncio'>";
 				var valor = anuncioSnapshot.val();
 				var premium = anuncioSnapshot.val().premium;
+				
+				anuncioOutput =anuncioOutput+"<div id='calendario_"+dniProfe+"' class='calendario'></div>"
         
         anuncioOutput =anuncioOutput+ "<h3>Profesor: <a onclick='verPerfil(\"" + dniProfe + "\")'>"+valor.nombre+"</a></h3> ";
 				
@@ -35,7 +37,7 @@ $( document ).ready(function() {
 				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
 				for(var i in horarios) {
 					var estado = horarios[i].estado;
-					var fecha = horarios[i].dia+"/"+horarios[i].mes+"/"+horarios[i].año;
+					var fecha = horarios[i].dia+"/"+horarios[i].mes+"/"+horarios[i].anyo;
 					var hora = horarios[i].hora;
 					
 					anuncioOutput = anuncioOutput+"<option value="+fecha+"-"+hora+">"+fecha+" a las "+hora+"</option>";
@@ -52,13 +54,15 @@ $( document ).ready(function() {
 					
 				} else {
 					
-					var listaPremium = document.getElementById('noPremium').innerHTML;
-					document.getElementById('noPremium').innerHTML=listaPremium+output;
+					var listaNoPremium = document.getElementById('noPremium').innerHTML;
+					document.getElementById('noPremium').innerHTML=listaNoPremium+output;
 					
 				}
+				calendarioAnuncio(dniProfe);
 				cantidad_anuncios++;
 			}
 		});
+		
 		buildSelectBox();
 
 	});
@@ -98,7 +102,7 @@ function solicitarClase(profe){
 		output.estado = "pendiente";
 		output.dia= dia;
 		output.mes=mes;
-		output.año=anyo;
+		output.anyo=anyo;
 		output.hora = horario;
 		output.idioma = idiomaSele;
 		output.solicitante = dniAlumno;
