@@ -30,18 +30,11 @@ $( document ).ready(function() {
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
 				}
-				var horarios=anuncioSnapshot.val().horario;
-				anuncioOutput = anuncioOutput+"<p>Horario disponible:</p>";
+				anuncioOutput = anuncioOutput+"<p id='txtHorario'>Horario disponible:</p>";
 				anuncioOutput = anuncioOutput+"<div class='custom-select' style='width:200px;'>";
-				anuncioOutput = anuncioOutput+"<select id = 'horario_"+dniProfe+"' class='horario_"+dniProfe+"'>";
-				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione clase: </option>";
-				for(var i in horarios) {
-					var estado = horarios[i].estado;
-					var fecha = horarios[i].dia+"/"+horarios[i].mes+"/"+horarios[i].anyo;
-					var hora = horarios[i].hora;
-					
-					anuncioOutput = anuncioOutput+"<option value="+fecha+"-"+hora+">"+fecha+" a las "+hora+"</option>";
-				}
+				anuncioOutput = anuncioOutput+"<select id = 'horario_"+dniProfe+"' class='btn btn-primary dropdown-toggle'>";
+				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione dia: </option>";
+				
 				anuncioOutput = anuncioOutput+"</select>";
 				anuncioOutput = anuncioOutput+"</div>";
 				anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\")'> Solicitar Clase </button>";
@@ -62,15 +55,36 @@ $( document ).ready(function() {
 				cantidad_anuncios++;
 			}
 		});
-		
-		buildSelectBox();
-
 	});
 	
 });
 
-function solicitarClase(profe){
+function seleccionarDia(dni,dia){
 	
+	var seleccion = document.getElementById("horario_"+dni);
+	while(seleccion.length > 0) {
+		seleccion.remove(seleccion.length-1);
+	}
+	firebase.database().ref('Anuncios').child(dni).child('horario').on('value',function(snapshot) {
+		snapshot.forEach(horaSnapshot => {
+			var horario =horaSnapshot.val();
+			var idHorario=horaSnapshot.key;
+			var estado = horario.estado;
+			
+			if(horario.dia==dia && estado=="disponible"){
+				
+				var fecha = horario.dia+"/"+horario.mes+"/"+horario.anyo;
+				var hora = horario.hora;
+				$("#horario_"+dni).append(new Option(hora, idHorario));	
+				document.getElementById("txtHorario").innerHTML = "Horario disponible para "+fecha+":";
+			}
+		});
+	
+		
+	});
+};
+
+function solicitarClase(profe){
 	var profeid = "idioma_"+profe;
 	var input_radio = document.getElementsByName(profeid);
 	
@@ -88,42 +102,46 @@ function solicitarClase(profe){
 	
 	var fechaId = "horario_"+profe;
 	var selectBox = document.getElementById(fechaId);
-	var horario = selectBox.options[selectBox.selectedIndex].value;
-	var fechaSol = horario.substring(0,9);
-	var horario = horario.substring(10,15);
-	var dniAlumno = localStorage['dni'];
-	var mes = fechaSol.substring(2, 4);
-	var dia = fechaSol.substring(0, 1);
-	var anyo = fechaSol.substring(5, 9);
+	var idhorario = selectBox.options[selectBox.selectedIndex].value;
 	
-	
-	var output = new Object();
-		output.descripcion = "Solicitud de clase";
-		output.estado = "pendiente";
-		output.dia= dia;
-		output.mes=mes;
-		output.anyo=anyo;
-		output.hora = horario;
-		output.idioma = idiomaSele;
-		output.solicitante = dniAlumno;
-		output.profesor = profe;
-		output.tipo = "clase";
-		output.nombreSolicitante=localStorage['nombre'];
-		output.precio = 10; //to do 
-	
-	
-	if((idiomaSele != undefined) && (horario != "")){
-			
-			firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
-			guarda = dniAlumno;
-			alert("Solicitud enviada correctamente");
-			mostrar_boton();
+	firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).once('value').then(function(snapshot) {
+		var horario=snapshot.val();
 
-	}else{
-		alert("Elija Idioma y fecha");
-	}
-	anunant=profe;
-	
+		var hora = horario.hora;
+		var dniAlumno = localStorage['dni'];
+		var mes = horario.mes;
+		var dia = horario.dia;
+		var anyo = horario.anyo;
+		
+		
+		var output = new Object();
+			output.descripcion = "Solicitud de clase";
+			output.estado = "pendiente";
+			output.dia= dia;
+			output.mes=mes;
+			output.anyo=anyo;
+			output.hora = hora;
+			output.idioma = idiomaSele;
+			output.solicitante = dniAlumno;
+			output.profesor = profe;
+			output.tipo = "clase";
+			output.nombreSolicitante=localStorage['nombre'];
+			output.precio = 10; //to do 
+		
+		
+		if((idiomaSele != undefined) && (horario != "")){
+				
+				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
+				guarda = dniAlumno;
+				alert("Solicitud enviada correctamente");
+				mostrar_boton();
+				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
+
+		}else{
+			alert("Elija Idioma y fecha");
+		}
+		anunant=profe;
+	});
 }	
 		
  function verPerfil(param){

@@ -48,12 +48,13 @@ function rechazar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
 		var notificacionRechazada = new Object();		
-		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.fecha+"-"+notificacion.hora;
+		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		
 		notificarUsuario(notificacion.solicitante,notificacionRechazada);
 
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).child('estado').set('rechazada');
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
+		firebase.database().ref('Anuncios').child(localStorage['dni']).child("horario").child(idhorario).child("estado").set("disponible");
 	});	
 }
 

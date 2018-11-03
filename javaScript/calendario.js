@@ -216,7 +216,7 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 		snapshot.forEach(claseSnapshot => {
 			var clase = claseSnapshot.val();
 			// se le suma 1 al mes porque en la lógica del calendario van de 0 a 11
-			if((clase.mes==mes+1)&&(clase.anyo==year)){
+			if((clase.mes==mes+1)&&(clase.anyo==year)&&(clase.estado=="disponible")){
 				clases.push(clase);
 			}
 			
@@ -237,9 +237,9 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 		tabla=(tabla+"<table align='center' border='0' cellpadding='5' cellspacing='5'>");
 
 		tabla=(tabla+"<tr align='center' id='cabeza'>");
-		tabla=(tabla+"<td id='cambiar'><a href='javascript:calendarioAnuncio("+dni+",-1)'><<</a></td>");
+		tabla=(tabla+"<td id='cambiar'><a href='javascript:calendarioAnuncio(\"" + dni + "\",-1)'><<</a></td>");
 		tabla=(tabla+"<td colspan='5'>"+meses[mes]+" de "+year+"</td>");
-		tabla=(tabla+"<td id='cambiar'><a href='javascript:calendarioAnuncio("+dni+",+1)'>>></a></td>");
+		tabla=(tabla+"<td id='cambiar'><a href='javascript:calendarioAnuncio(\"" + dni + "\",+1)'>>></a></td>");
 		tabla=(tabla+"</tr>");
 
 		tabla=(tabla+"<tr id='diasSema' align='center'>");
@@ -283,14 +283,14 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 					if((i==5)||(i==6)){
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
 							if(doyClase) {
-								tabla=(tabla+"<td id='hoy' onclick='mostrarInformacionClase("+a+")'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
-								tabla=(tabla+"<td id='hoy' onclick='mostrarInformacionClase("+a+")'>"+a+"</td>");
+								tabla=(tabla+"<td>"+a+"</td>");
 							}
 						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td id='finDe'>"+a+"</td>");
@@ -301,7 +301,7 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
 						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onmouseover='mostrarInformacionClase("+a+")' onmouseout='borrarInformacionClase()'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
