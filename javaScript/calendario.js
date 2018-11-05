@@ -298,7 +298,12 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 						}
 					}else{
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
-							tabla=(tabla+"<td id='hoy'>"+a+"</td>");
+							if(doyClase) {
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
+								doyClase=false;
+							}else {
+								tabla=(tabla+"<td>"+a+"</td>");
+							}
 						}else{
 							if(doyClase) {
 								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
