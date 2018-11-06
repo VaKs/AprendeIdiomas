@@ -58,6 +58,44 @@ function rechazar_clase(key){
 	});	
 }
 
+var resolve;
+function comprarTokens(){
+	
+	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
+		
+		resolve =dato.val().tokens	
+		resolve += 10;
+		
+		});
+		
+		
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
+		
+		alert('se va a proceder a realizar un cobro en su cuenta');
+		alert('a recargado 10 tokens');
+}
+
+
+function retirarDinero(){
+	
+	
+	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
+		
+	resolve =dato.val().tokens
+	
+	});
+	
+	if(resolve<50){
+		alert('No tiene suficientes tokens para realizar una transaccion bancaria');
+	}else{
+		resolve=0;
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
+		alert('Se han retirado todos los tokens, en dos dias recibira el dinero en su cuenta bancaria.');	
+
+	}
+
+}
+
 function notificarUsuario(dni,notificacion){
 	firebase.database().ref('Usuarios').child(dni).child('notificaciones').push(notificacion);
 	
