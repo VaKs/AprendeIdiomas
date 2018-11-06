@@ -86,11 +86,11 @@ function retirarDinero(){
 	});
 	
 	if(resolve<50){
-		alert('No tiene suficientes tokens para realizar una transaccion bancaria');
+		alert('No tiene suficientes tokens para realizar una transaccion bancaria, 50 tokens minimo');
 	}else{
-		resolve=0;
+		resolve=50;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-		alert('Se han retirado todos los tokens, en dos dias recibira el dinero en su cuenta bancaria.');	
+		alert('Se ha realizado una transaccion de 50 tokens en su cuenta bancaria, en dos dias recibira el dinero');	
 
 	}
 
