@@ -90,10 +90,8 @@ function retirarDinero(){
 	}else{
 		resolve=50;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-		alert('Se ha realizado una transaccion de 50 tokens en su cuenta bancaria, en dos dias recibira el dinero');	
-
+		alert('Se ha realizado una transaccion de 50 tokens en su cuenta bancaria, en dos dias recibira el dinero');
 	}
-
 }
 
 function notificarUsuario(dni,notificacion){
