@@ -32,10 +32,10 @@ function aceptar_clase(key){
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;
 		clase.profesor = notificacion.profesor;
+		clase.nombreProfe = notificacion.nombreProfe;
 		clase.nombreSolicitante=notificacion.nombreSolicitante;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
-		
 		var notificacionAceptacion = new Object();
 		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+"-"+notificacion.hora;
 		
@@ -47,6 +47,7 @@ function aceptar_clase(key){
 function rechazar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
+		var idhorario=notificacion.idHorario;
 		var notificacionRechazada = new Object();		
 		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		
