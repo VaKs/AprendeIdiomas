@@ -10,6 +10,7 @@ $( document ).ready(function() {
 				var dniProfe = anuncioSnapshot.key;
 				var anuncioOutput = "<div id="+dniProfe+" class='anuncio'>";
 				var valor = anuncioSnapshot.val();
+				var nombreProfe = valor.nombre;
 				var premium = anuncioSnapshot.val().premium;
 				
 				anuncioOutput =anuncioOutput+"<div id='calendario_"+dniProfe+"' class='calendario'></div>"
@@ -37,7 +38,7 @@ $( document ).ready(function() {
 				
 				anuncioOutput = anuncioOutput+"</select>";
 				anuncioOutput = anuncioOutput+"</div>";
-				anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\")'> Solicitar Clase </button>";
+				anuncioOutput = anuncioOutput+"<button id='btn-"+dniProfe+"' class='btn btn-primary' onclick='solicitarClase(\"" + dniProfe + "\",\"" + nombreProfe + "\")'> Solicitar Clase </button>";
 				anuncioOutput = anuncioOutput+"</div><br>";
 				output=output+anuncioOutput;
 				
@@ -84,7 +85,7 @@ function seleccionarDia(dni,dia){
 	});
 };
 
-function solicitarClase(profe){
+function solicitarClase(profe,nombreProfe){
 	var profeid = "idioma_"+profe;
 	var input_radio = document.getElementsByName(profeid);
 	
@@ -106,7 +107,6 @@ function solicitarClase(profe){
 	
 	firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).once('value').then(function(snapshot) {
 		var horario=snapshot.val();
-
 		var hora = horario.hora;
 		var dniAlumno = localStorage['dni'];
 		var mes = horario.mes;
@@ -124,6 +124,8 @@ function solicitarClase(profe){
 			output.idioma = idiomaSele;
 			output.solicitante = dniAlumno;
 			output.profesor = profe;
+			output.nombreProfe=nombreProfe;
+			output.idHorario= idhorario;
 			output.tipo = "clase";
 			output.nombreSolicitante=localStorage['nombre'];
 			output.precio = 10; //to do 
@@ -134,7 +136,7 @@ function solicitarClase(profe){
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 				guarda = dniAlumno;
 				alert("Solicitud enviada correctamente");
-				mostrar_boton();
+				//mostrar_boton();
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
 
 		}else{

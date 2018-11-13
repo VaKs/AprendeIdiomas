@@ -32,10 +32,10 @@ function aceptar_clase(key){
 		clase.idioma = notificacion.idioma;
 		clase.precio = notificacion.precio;
 		clase.profesor = notificacion.profesor;
+		clase.nombreProfe = notificacion.nombreProfe;
 		clase.nombreSolicitante=notificacion.nombreSolicitante;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
-		
 		var notificacionAceptacion = new Object();
 		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+"-"+notificacion.hora;
 		
@@ -47,6 +47,7 @@ function aceptar_clase(key){
 function rechazar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
+		var idhorario=notificacion.idHorario;
 		var notificacionRechazada = new Object();		
 		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		
@@ -60,19 +61,26 @@ function rechazar_clase(key){
 
 var resolve;
 function comprarTokens(){
-	
-	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
+ 
+ firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
 		
 		resolve =dato.val().tokens	
-		resolve += 10;
+		
 		
 		});
 		
+ swal("Indique cuantos tokens deséa ingresar:", {
+  content: "input",
+})
+.then((value1) => {
+  swal(`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`);
 		
+		resolve += parseInt(value1);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
+  
+  
+});	
 		
-		alert('se va a proceder a realizar un cobro en su cuenta');
-		alert('a recargado 10 tokens');
 }
 
 
@@ -85,13 +93,26 @@ function retirarDinero(){
 	
 	});
 	
-	if(resolve<50){
-		alert('No tiene suficientes tokens para realizar una transaccion bancaria, 50 tokens minimo');
-	}else{
-		resolve=50;
+	swal("Indique cuantos tokens desea retirar:", {
+	content: "input",
+})
+.then((value2) => {
+	
+	if(resolve<value2){
+		
+		swal(`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`);
+		
+		}else{
+		resolve-=value2;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-		alert('Se ha realizado una transaccion de 50 tokens en su cuenta bancaria, en dos dias recibira el dinero');
+		swal(`Se ha realizado la transaccion de ${value2} tokens, en dos dias se efectuara el ingreso en cuenta bancaria`);
+	
+	
 	}
+	
+	});	
+		
+
 }
 
 function notificarUsuario(dni,notificacion){
