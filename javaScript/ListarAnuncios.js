@@ -60,8 +60,7 @@ $( document ).ready(function() {
 	
 });
 
-function seleccionarDia(dni,dia){
-	
+function seleccionarDia(dni,dia,mes,anyo){
 	var seleccion = document.getElementById("horario_"+dni);
 	while(seleccion.length > 0) {
 		seleccion.remove(seleccion.length-1);
@@ -72,7 +71,7 @@ function seleccionarDia(dni,dia){
 			var idHorario=horaSnapshot.key;
 			var estado = horario.estado;
 			
-			if(horario.dia==dia && estado=="disponible"){
+			if((horario.dia==dia) && (horario.mes==mes) && (horario.anyo==anyo) && (estado=="disponible")){
 				
 				var fecha = horario.dia+"/"+horario.mes+"/"+horario.anyo;
 				var hora = horario.hora;
