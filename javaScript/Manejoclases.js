@@ -71,9 +71,10 @@ function comprarTokens(){
 		
  swal("Indique cuantos tokens deséa ingresar:", {
   content: "input",
+  
 })
 .then((value1) => {
-  swal(`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`);
+  swal("Exito",`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`,"success");
 		
 		resolve += parseInt(value1);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
@@ -100,12 +101,12 @@ function retirarDinero(){
 	
 	if(resolve<value2){
 		
-		swal(`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`);
+		swal("Error",`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`,"error");
 		
 		}else{
 		resolve-=value2;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-		swal(`Se ha realizado la transaccion de ${value2} tokens, en dos dias se efectuara el ingreso en cuenta bancaria`);
+		swal("Exito",`Se ha realizado la transaccion de ${value2} tokens, en dos dias se efectuara el ingreso en cuenta bancaria`,"success");
 	
 	
 	}

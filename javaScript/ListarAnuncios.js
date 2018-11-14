@@ -135,12 +135,12 @@ function solicitarClase(profe,nombreProfe){
 				
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 				guarda = dniAlumno;
-				alert("Solicitud enviada correctamente");
+				swal("Exito","Solicitud enviada correctamente","success");
 				//mostrar_boton();
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
 
 		}else{
-			alert("Elija Idioma y fecha");
+			swal("Cuidado","Elija Idioma y fecha","warning");
 		}
 		anunant=profe;
 	});
