@@ -1,9 +1,11 @@
 $( document ).ready(function() {
-
+	mostrarAnuncios();
+});
+function mostrarAnuncios(pidioma,pnivel ){
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		var cantidad_anuncios = 0;
 
-		document.getElementById('container').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
+		document.getElementById('busqueda').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
 		snapshot.forEach(anuncioSnapshot => {
 			if(cantidad_anuncios<=20){
 				var output="";
@@ -18,11 +20,12 @@ $( document ).ready(function() {
         anuncioOutput =anuncioOutput+ "<h3>Profesor: <a onclick='verPerfil(\"" + dniProfe + "\")'>"+valor.nombre+"</a></h3> ";
 				
 				var idiomas = anuncioSnapshot.val().Idiomas;
+				var pasafiltro = false;
 				for(var i in idiomas) {
 					var idioma = idiomas[i].Idioma;
 					var nivel = idiomas[i].Nivel;
 					var coste = idiomas[i].coste;
-
+					if(idioma == pidioma && nivel == pnivel){pasafiltro = true;}
 					var idIdioma="#"+dniProfe;
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
 
@@ -42,15 +45,17 @@ $( document ).ready(function() {
 				anuncioOutput = anuncioOutput+"</div><br>";
 				output=output+anuncioOutput;
 				
-				if(premium){
-					var listaPremium = document.getElementById('premium').innerHTML;
-					document.getElementById('premium').innerHTML=listaPremium+output;
-					
-				} else {
-					
-					var listaNoPremium = document.getElementById('noPremium').innerHTML;
-					document.getElementById('noPremium').innerHTML=listaNoPremium+output;
-					
+				if((pidioma == undefined && pnivel == undefined)|| pasafiltro){
+					if(premium){
+						var listaPremium = document.getElementById('premium').innerHTML;
+						document.getElementById('premium').innerHTML=listaPremium+output;
+						
+					} else {
+						
+						var listaNoPremium = document.getElementById('noPremium').innerHTML;
+						document.getElementById('noPremium').innerHTML=listaNoPremium+output;
+						
+						}
 				}
 				calendarioAnuncio(dniProfe);
 				cantidad_anuncios++;
@@ -58,7 +63,7 @@ $( document ).ready(function() {
 		});
 	});
 	
-});
+}
 
 function seleccionarDia(dni,dia,mes,anyo){
 	var seleccion = document.getElementById("horario_"+dni);
@@ -147,6 +152,14 @@ function solicitarClase(profe,nombreProfe){
 		
  function verPerfil(param){
 	location.href="usuario.html?"+param+"";
+}
+
+function filtrarBusqueda(){
+	var id = document.getElementById("idioma");
+	var ni = document.getElementById("nivel");
+	var idioma = id.options[id.selectedIndex].value;
+	var nivel = ni.options[ni.selectedIndex].value;
+	mostrarAnuncios(idioma,nivel);
 }
 
 
