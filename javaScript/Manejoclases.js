@@ -74,12 +74,15 @@ function comprarTokens(){
   
 })
 .then((value1) => {
-  swal("Exito",`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`,"success");
-		
+ 
+	if(parseInt(value1) >= 1 ){
 		resolve += parseInt(value1);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-  
-  
+	swal("Exito",`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`,"success");
+	}
+	else{	
+	swal("Error",`No puede ingresar ${value1} en tus tokens`,"error");
+	}
 });	
 		
 }
@@ -98,7 +101,8 @@ function retirarDinero(){
 	content: "input",
 })
 .then((value2) => {
-	
+	if(parseInt(value2) >= 1 ){
+		
 	if(resolve<value2){
 		
 		swal("Error",`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`,"error");
@@ -110,7 +114,10 @@ function retirarDinero(){
 	
 	
 	}
-	
+	}
+	else{	
+	swal("Error",`No puede retirar ${value2} en tus tokens`,"error");
+	}
 	});	
 		
 
