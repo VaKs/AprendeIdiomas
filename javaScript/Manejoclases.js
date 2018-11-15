@@ -1,18 +1,44 @@
+
 function listar_notificaciones(){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').on('value',function(snapshot) {
-	var output = "<p> Notificaciones: </p><br><ul>";
+	var output = "";
+
+		listaOrdenada = new Array();
+
 		snapshot.forEach(notificacionSnapshot => {
+			 listaOrdenada.unshift(notificacionSnapshot);
+		});
+
+		listaOrdenada.forEach(notificacionSnapshot => {
 			var key = notificacionSnapshot.key;
 			var notificacion = notificacionSnapshot.val();
-			output =output+ "<li>"+ notificacion.descripcion;
-			if(notificacion.tipo == "clase"){
+			console.log("DESCRIP", notificacion.tipo);
+
+			// output =output+ "<li><i>"+ notificacion.descripcion;
+
+			if(notificacion.tipo != "clase"){
+				output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
+			}
+			else{
+
+				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
+
 				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
 				"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
-				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button>";
+				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
+				output = output + "</strong>";
 			}
-			output = output + "</li>";
+			
+			// if(notificacion.tipo == "clase"){
+			// 	output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
+			// 	"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
+			// 	"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
+			// }
+			// output = output + "</i></li>";
 		});
-		output = output + "</ul>";
+
+
+		output = output + "";
 		document.getElementById('container1').innerHTML = output;
 	});
 	
@@ -60,6 +86,7 @@ function rechazar_clase(key){
 }
 
 var resolve;
+
 function comprarTokens(){
  
  firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
@@ -71,18 +98,14 @@ function comprarTokens(){
 		
  swal("Indique cuantos tokens deséa ingresar:", {
   content: "input",
-  
 })
 .then((value1) => {
- 
-	if(parseInt(value1) >= 1 ){
+  swal(`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`);
+		
 		resolve += parseInt(value1);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-	swal("Exito",`Se han ingresado: ${value1} Tokens en su cuenta personal de AprendeIdiomas`,"success");
-	}
-	else{	
-	swal("Error",`No puede ingresar ${value1} en tus tokens`,"error");
-	}
+  
+  
 });	
 		
 }
@@ -101,23 +124,19 @@ function retirarDinero(){
 	content: "input",
 })
 .then((value2) => {
-	if(parseInt(value2) >= 1 ){
-		
+	
 	if(resolve<value2){
 		
-		swal("Error",`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`,"error");
+		swal(`No puede retirar ${value2} tokens, la cantidad que posee en su cuenta es de ${resolve} tokens`);
 		
 		}else{
 		resolve-=value2;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(resolve);
-		swal("Exito",`Se ha realizado la transaccion de ${value2} tokens, en dos dias se efectuara el ingreso en cuenta bancaria`,"success");
+		swal(`Se ha realizado la transaccion de ${value2} tokens, en dos dias se efectuara el ingreso en cuenta bancaria`);
 	
 	
 	}
-	}
-	else{	
-	swal("Error",`No puede retirar ${value2} en tus tokens`,"error");
-	}
+	
 	});	
 		
 
