@@ -1,235 +1,54 @@
+
 <html>
-
-<head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="../style/calendario.css" type="text/css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../style/style.css" type="text/css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-	<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
-	<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
-	<script language="javascript" type="text/javascript" src="../javaScript/Manejoclases.js"></script>
-	<script language="javascript" type="text/javascript" src="../javaScript/PerfilUsuarioActual.js"></script>
-	<script language="javascript" type="text/javascript" src="../javaScript/calendario.js"></script>
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>
-
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
-</head>
-
-<body onload="iniciar_perfil()">
-
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="../style/calendario.css" type="text/css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../style/style.css" type="text/css">
+		
+		<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/Manejoclases.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/PerfilUsuarioActual.js"></script>
+		<script language="javascript" type="text/javascript" src="../javaScript/calendario.js"></script>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>	
+		
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<meta name="tipo_contenido"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	</head>
+	<body onload="iniciar_perfil()">
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Aprende Idiomas</a>
+			  <a class="navbar-brand" href="#">Aprende Idiomas</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="./buscarAnuncio.html">Buscar Anuncio</a></li>
-				<li class="active"><a href="#">Mi perfil</a></li>
+			  <li><a href="../index.html">Home</a></li>
+			  <li><a href="./buscarAnuncio.html">Buscar Anuncio</a></li>
+			  <li class="active"><a href="#">Mi perfil</a></li>
 			</ul>
+		  </div>
+		</nav>	
+	
+		<div id="container">
+			<button id="classtest" class="btn btn-primary" onclick="comprarTokens()">Recargar tokens</button><br>
+			<button id="classtest" class="btn btn-primary" onclick="retirarDinero()">Retirada de Tokens</button><br>
+			<button id="classtest" class="btn btn-primary" onclick="promocionarUsuario()">Promocionar Usuario</button><br>
+			<button id="classtest" class="btn btn-primary" onclick="transaccionTokens('12345678A', '87654321Z', 10)">Pagar Clase</button><br>
+			<div id="premium" align="right"></div>
+			<div id="calendario"></div> 
+			<div id="container1"></div> 	
 		</div>
-	</nav>
-
-
-	<div id="container">
-
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#tuPerfil">Tu perfil</a></li>
-			<li><a href="#panelControl">Panel de control</a></li>
-		</ul>
-
-		<div class="tab-content">
-			<div id="tuPerfil" class="tab-pane fade in active">
-
-				<div class="row">
-					<div class="col-xs-3 col-md-3">
-						<img src="../img/us.png" border="1" width="100%">
-					</div>
-					<div class="col-xs-6 col-md-6">
-						</br></br>
-						<span id="nombre" style="text-transform: uppercase;color: #337ab7"></span> </br>
-						</br>
-						<span id="localidad" style="text-transform: uppercase;color: #337ab7"></span> </br>
-						</br>
-						<strong id="valoracion" style="text-transform: uppercase;color: #d8b500"></strong> </br>
-						</br>
-						<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar perfil</button> -->
-						<button type="button" class="btn btn-warning" onclick="openModalEditarPerfil()"><i class="fa fa-pencil-square-o"
-							 aria-hidden="true"></i> Editar perfil</button>
-
-						<button id="classtest" class="btn btn-primary btnPromocionar" onclick="promocionarUsuario()"> <i class="fa fa-hand-o-up"
-							 aria-hidden="true"></i> Promocionar Usuario</button><br>
-					</div>
-					<div class="col-xs-3 col-md-3">
-						</br>
-						<div id="premium" align="right"></div>
-					</div>
-
-				</div>
-
-				</br>
-
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<span id="descripcion"> </span>
-					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading"> <i class="fa fa-graduation-cap"></i> <strong>Información Academica</strong> </div>
-					<div class="panel-body">
-
-						<div class="row">
-							<div class="col-xs-12 col-md-12">
-								<span id="estudios"></span> </br>
-								<span id="idiomas"> </span>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="panel panel-warning">
-					<div class="panel-heading"> <i class="fa fa-commenting-o"></i> <strong>Reseñas</strong> </div>
-					<div class="panel-body">
-						<span id="reseñas"> </span>
-					</div>
-				</div>
-
-
-			</div>
-
-			<div id="panelControl" class="tab-pane fade">
-
-				</br>
-				<div class="row">
-
-					<div class="col-xs-8 col-md-8">
-						<div class="panel panel-success" style="height:525px;">
-							<div class="panel-heading"> <i class="fa fa-bell"></i> <strong> Notificaciones </strong> </div>
-							<div class="panel-body">
-								<div id="container1"></div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-xs-4 col-md-4">
-
-						<div class="panel panel-info">
-							<div class="panel-heading"> <i class="fa fa-calendar"></i> <strong> Mi calendario </strong> </div>
-							<div class="panel-body">
-								<div id="calendario"></div>
-							</div>
-						</div>
-
-						</br>
-
-						<div class="panel panel-default">
-							<div class="panel-heading"> <i class=""></i> <strong> N° Tokens: <span id="cantTokens"></span> </strong> </div>
-							<div class="panel-body">
-								<button style="width: 100%" id="classtest" class="btn btn-primary" onclick="comprarTokens()">Recargar tokens</button><br>
-								<br>
-								<button style="width: 100%" id="classtest" class="btn btn-primary" onclick="retirarDinero()">Retirada de Tokens</button><br>
-							</div>
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-
-	<div id="calInfo"></div>
-
-
-
-	<!-- Modal -->
-	<div class="modal fade" id="modalEditarPerfil" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar perfil</h4>
-				</div>
-				<div class="modal-body">
-
-					<div class="panel panel-warning">
-						<div class="panel-heading"><i class="fa fa-user" aria-hidden="true"></i> Datos personales</div>
-						<div class="panel-body">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Nombre</label>
-								<input class="form-control" id="nombrePerfil" placeholder="Ej: Juan">
-
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputEmail1">Apellidos</label>
-								<input class="form-control" id="apellidoPerfil" placeholder="Ej: León Kramm">
-
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputPassword1">Localidad</label>
-								<input class="form-control" id="localidadPerfil" placeholder="Ej: Carrer jose aguilar, Valencia...">
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputPassword1">Descripción</label>
-								<textarea class="form-control" rows="5" id="descripcionPerfil" placeholder="Soy una persona..."></textarea>
-							</div>
-
-						</div>
-					</div>
-
-					<div class="panel panel-warning">
-						<div class="panel-heading"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Información Académica</div>
-						<div class="panel-body">
-							
-							<div class="form-group">
-								<label for="exampleInputPassword1">Estudios</label>
-								<textarea class="form-control" rows="5" id="estudiosPerfil" placeholder="Soy una persona..."></textarea>
-							</div>
-
-						</div>
-					</div>
-
-				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" class="btn btn-success" onclick="guardarEditarPerfil()"> <i class="fa fa-floppy-o"
-						 aria-hidden="true"></i> Guardar</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-
-	<script>
-		$(document).ready(function () {
-			$(".nav-tabs a").click(function () {
-				$(this).tab('show');
-			});
-		});
-	</script>
-
-</body>
-
+		<div id="calInfo"></div>
+	
+	</body>
 </html>

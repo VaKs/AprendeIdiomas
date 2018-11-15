@@ -1,7 +1,5 @@
 var usuarioActual;
 
-var DatosPerfilActual;
-
 function SignIn(){
 	localStorage['dni']="12345678A";
 	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
@@ -52,12 +50,14 @@ function mostrarPremium() {
 			var img = document.createElement('IMG');
 			img.setAttribute('src', "../img/premium.jpg");
 			img.setAttribute('height', "auto");
-			img.setAttribute('width', "100%");
+			img.setAttribute('width', "10%");
 			var div = document.getElementById('premium');
 			div.appendChild(img);
 		}
 	});
 }
+
+
 
 function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 	let tokensEmisor = new Promise((resolve, reject) => {
@@ -88,91 +88,5 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 
 		firebase.database().ref('Usuarios').child(dniEmisor).child('notificaciones').push(output);
 		firebase.database().ref('Usuarios').child(dniReceptor).child('notificaciones').push(output);
-}
-
-function mostrarInfoPerfil(){
-
-	firebase.database().ref('Usuarios').on('value',function(dato) {
-
-		var valor = null;
-
-		dato.forEach(datosUsuario => {
-
-			var dniProfe = datosUsuario.key;
-
-			if(dniProfe==localStorage['dni']){
-				valor = datosUsuario.val();
-				return true;
-			}
-			
-		
-		});
-
-		DatosPerfilActual = valor;
-
-		document.getElementById('cantTokens').innerHTML=" <span id='cantTokens'>" + valor.tokens + " </span> ";
-		document.getElementById('nombre').innerHTML="<i class='fa fa-user'></i> <strong> Nombre: </strong> <span id='nombre'>" + valor.nombre + " " + valor.apellido + " </span> ";
-		document.getElementById('localidad').innerHTML="<i class='fa fa-map-marker'></i> <strong> Localidad: </strong> <span id='localidad'>" + valor.Caracteristicas.Localidad + " </span> ";
-		document.getElementById('valoracion').innerHTML="<i class='fa fa-star'></i> Valoracion: <span id='localidad'>" + valor.Caracteristicas.Valoracion + " </span> ";
-		document.getElementById('descripcion').innerHTML="<i>" + valor.Caracteristicas.Descripcion + "</i>";
-		document.getElementById('estudios').innerHTML=" <u> <strong> Estudios </strong> </u> </br></br> <span id='estudios'>" + valor.Caracteristicas.Estudios + " </span> <hr/> ";
-
-
-		var listaIdiomas = " <u> <strong> Clases impartidas </strong> </u> </br></br>"
-		var idiomas = valor.Idiomas;
-
-		for(var i in idiomas) {
-			var idioma = idiomas[i].Idioma;
-			var nivel = idiomas[i].Nivel;
-			var coste = idiomas[i].coste;
-
-		    listaIdiomas = listaIdiomas + "<li type='circle'> <span> Idioma " + idioma+" nivel: "+nivel+" - Precio: "+coste+" tokens" + "</span> </li> </br>"
-
-		}
-
-		document.getElementById('idiomas').innerHTML= listaIdiomas;
-
-		var listaReseñas = ""
-		var reseñas = valor.Caracteristicas.Reseñas;
-
-		for(var i in reseñas) {
-			listaReseñas = listaReseñas + "<span> <i class='fa fa-star' aria-hidden='true'></i>  <i>" + reseñas[i]+ " </i> </span> </br></br>";
-		}
-
-		document.getElementById('reseñas').innerHTML= listaReseñas;
-
-	});
-}
-
-function openModalEditarPerfil(){
-	console.log("HOLA", DatosPerfilActual);
-	document.getElementById("nombrePerfil").value=DatosPerfilActual.nombre;
-	document.getElementById("apellidoPerfil").value=DatosPerfilActual.apellido;
-	document.getElementById("localidadPerfil").value=DatosPerfilActual.Caracteristicas.Localidad;
-	document.getElementById("descripcionPerfil").value=DatosPerfilActual.Caracteristicas.Descripcion;
-	document.getElementById("estudiosPerfil").value=DatosPerfilActual.Caracteristicas.Estudios;
-
-	$('#modalEditarPerfil').modal({backdrop: 'static', keyboard: false})
-	$('#modalEditarPerfil').modal('show');
-}
-
-function guardarEditarPerfil(){
-
-	var nombreNuevo = document.getElementById("nombrePerfil").value;
-	var apellidoNuevo = document.getElementById("apellidoPerfil").value;
-	var localidadNuevo = document.getElementById("localidadPerfil").value;
-	var descripcionNuevo = document.getElementById("descripcionPerfil").value;
-
-	var EstudiosNuevo = document.getElementById("estudiosPerfil").value;
-
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('nombre').set(nombreNuevo);
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('apellido').set(apellidoNuevo);
-	firebase.database().ref('Anuncios').child(localStorage['dni']).child('nombre').set(nombreNuevo + ' ' + apellidoNuevo);
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Localidad').set(localidadNuevo);
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Descripcion').set(descripcionNuevo);
-
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Estudios').set(EstudiosNuevo);
-
-	$('#modalEditarPerfil').modal('hide');
 }
 

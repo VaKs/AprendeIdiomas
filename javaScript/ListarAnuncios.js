@@ -1,9 +1,11 @@
 $( document ).ready(function() {
-
+	mostrarAnuncios();
+});
+function mostrarAnuncios(pidioma,pnivel ){
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		var cantidad_anuncios = 0;
 
-		document.getElementById('container').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
+		document.getElementById('busqueda').innerHTML="<div id='premium'></div><div id='noPremium'></div>";
 		snapshot.forEach(anuncioSnapshot => {
 			if(cantidad_anuncios<=20){
 				var output="";
@@ -18,11 +20,12 @@ $( document ).ready(function() {
         anuncioOutput =anuncioOutput+ "<h3>Profesor: <a onclick='verPerfil(\"" + dniProfe + "\")'>"+valor.nombre+"</a></h3> ";
 				
 				var idiomas = anuncioSnapshot.val().Idiomas;
+				var pasafiltro = false;
 				for(var i in idiomas) {
 					var idioma = idiomas[i].Idioma;
 					var nivel = idiomas[i].Nivel;
 					var coste = idiomas[i].coste;
-
+					if(idioma == pidioma && nivel == pnivel){pasafiltro = true;}
 					var idIdioma="#"+dniProfe;
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
 
@@ -42,15 +45,17 @@ $( document ).ready(function() {
 				anuncioOutput = anuncioOutput+"</div><br>";
 				output=output+anuncioOutput;
 				
-				if(premium){
-					var listaPremium = document.getElementById('premium').innerHTML;
-					document.getElementById('premium').innerHTML=listaPremium+output;
-					
-				} else {
-					
-					var listaNoPremium = document.getElementById('noPremium').innerHTML;
-					document.getElementById('noPremium').innerHTML=listaNoPremium+output;
-					
+				if((pidioma == undefined && pnivel == undefined)|| pasafiltro){
+					if(premium){
+						var listaPremium = document.getElementById('premium').innerHTML;
+						document.getElementById('premium').innerHTML=listaPremium+output;
+						
+					} else {
+						
+						var listaNoPremium = document.getElementById('noPremium').innerHTML;
+						document.getElementById('noPremium').innerHTML=listaNoPremium+output;
+						
+						}
 				}
 				calendarioAnuncio(dniProfe);
 				cantidad_anuncios++;
@@ -58,10 +63,9 @@ $( document ).ready(function() {
 		});
 	});
 	
-});
+}
 
-function seleccionarDia(dni,dia){
-	
+function seleccionarDia(dni,dia,mes,anyo){
 	var seleccion = document.getElementById("horario_"+dni);
 	while(seleccion.length > 0) {
 		seleccion.remove(seleccion.length-1);
@@ -72,7 +76,7 @@ function seleccionarDia(dni,dia){
 			var idHorario=horaSnapshot.key;
 			var estado = horario.estado;
 			
-			if(horario.dia==dia && estado=="disponible"){
+			if((horario.dia==dia) && (horario.mes==mes) && (horario.anyo==anyo) && (estado=="disponible")){
 				
 				var fecha = horario.dia+"/"+horario.mes+"/"+horario.anyo;
 				var hora = horario.hora;
@@ -135,12 +139,12 @@ function solicitarClase(profe,nombreProfe){
 				
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 				guarda = dniAlumno;
-				alert("Solicitud enviada correctamente");
+				swal("Exito","Solicitud enviada correctamente","success");
 				//mostrar_boton();
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
 
 		}else{
-			alert("Elija Idioma y fecha");
+			swal("Cuidado","Elija Idioma y fecha","warning");
 		}
 		anunant=profe;
 	});
@@ -148,6 +152,14 @@ function solicitarClase(profe,nombreProfe){
 		
  function verPerfil(param){
 	location.href="usuario.html?"+param+"";
+}
+
+function filtrarBusqueda(){
+	var id = document.getElementById("idioma");
+	var ni = document.getElementById("nivel");
+	var idioma = id.options[id.selectedIndex].value;
+	var nivel = ni.options[ni.selectedIndex].value;
+	mostrarAnuncios(idioma,nivel);
 }
 
 

@@ -97,16 +97,6 @@ body{
 
 #container1{
 	overflow-y:scroll;
-	/*width:100;*/
-	height:450px;
+	width:500;
+	height:500;
 	}
-
-.btnPromocionar{
-    background: #45cca1 !important;
-    border-color:  #45cca1 !important;
-}
-
-.btnPromocionar:hover{
-    background: #339878 !important;
-    border-color:  #45cca1 !important;
-}
