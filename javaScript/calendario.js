@@ -1,4 +1,6 @@
 var clases= [];
+
+
 function calendario(paramMes,paramYear,selection){
 	clases= [];
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value',function(snapshot) {
@@ -215,7 +217,6 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 		// Se introducen las clases de este mes en el array clases
 		snapshot.forEach(claseSnapshot => {
 			var clase = claseSnapshot.val();
-			
 			// se le suma 1 al mes porque en la lógica del calendario van de 0 a 11
 			if((clase.mes==mes+1)&&(clase.anyo==year)&&(clase.estado=="disponible")){
 				clases.push(clase);
@@ -276,7 +277,7 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 					
 					// se da clase hoy?
 					for (c=0;c<clases.length;c++) {
-						if(clases[c].dia==a && clases[c].mes==mes+1 &&clases[c].anyo==year){
+						if(clases[c].dia==a){
 							doyClase=true;
 						}
 					}
@@ -284,14 +285,14 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 					if((i==5)||(i==6)){
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\",\"" + (mes+1) + "\",\"" + year + "\")'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
 							}
 						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\",\"" + (mes+1) + "\",\"" + year + "\")'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td id='finDe'>"+a+"</td>");
@@ -300,14 +301,14 @@ function calendarioAnuncio(dni,paramMes,paramYear,selection){
 					}else{
 						if((a==numDia)&&(mes==fecha.getMonth())&&(year==fecha.getFullYear())){
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\",\"" + (mes+1) + "\",\"" + year + "\")'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
 							}
 						}else{
 							if(doyClase) {
-								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\",\"" + (mes+1) + "\",\"" + year + "\")'>"+a+"</td>");
+								tabla=(tabla+"<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\")'>"+a+"</td>");
 								doyClase=false;
 							}else {
 								tabla=(tabla+"<td>"+a+"</td>");
