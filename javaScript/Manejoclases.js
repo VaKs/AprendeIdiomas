@@ -1,18 +1,44 @@
+
 function listar_notificaciones(){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').on('value',function(snapshot) {
-	var output = "<p> Notificaciones: </p><br><ul>";
+	var output = "";
+
+		listaOrdenada = new Array();
+
 		snapshot.forEach(notificacionSnapshot => {
+			 listaOrdenada.unshift(notificacionSnapshot);
+		});
+
+		listaOrdenada.forEach(notificacionSnapshot => {
 			var key = notificacionSnapshot.key;
 			var notificacion = notificacionSnapshot.val();
-			output =output+ "<li>"+ notificacion.descripcion;
-			if(notificacion.tipo == "clase"){
+			console.log("DESCRIP", notificacion.tipo);
+
+			// output =output+ "<li><i>"+ notificacion.descripcion;
+
+			if(notificacion.tipo != "clase"){
+				output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
+			}
+			else{
+
+				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
+
 				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
 				"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
-				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button>";
+				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
+				output = output + "</strong>";
 			}
-			output = output + "</li>";
+			
+			// if(notificacion.tipo == "clase"){
+			// 	output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
+			// 	"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
+			// 	"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
+			// }
+			// output = output + "</i></li>";
 		});
-		output = output + "</ul>";
+
+
+		output = output + "";
 		document.getElementById('container1').innerHTML = output;
 	});
 	
@@ -86,7 +112,6 @@ function comprarTokens(){
 });	
 		
 }
-
 
 function retirarDinero(){
 	
