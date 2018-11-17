@@ -24,7 +24,7 @@ $( document ).ready(function() {
 		document.getElementById('valoracion').innerHTML="<i class='fa fa-star'></i> Valoracion: <span id='localidad'>" + valor.Caracteristicas.Valoracion + " </span> ";
 		document.getElementById('descripcion').innerHTML="<i>" + valor.Caracteristicas.Descripcion + "</i>";
 		document.getElementById('estudios').innerHTML=" <u> <strong> Estudios </strong> </u> </br></br> <span id='estudios'>" + valor.Caracteristicas.Estudios + " </span> <hr/> ";
-
+		mostrarPremium(valor.dni);
 
 		var listaIdiomas = " <u> <strong> Clases impartidas </strong> </u> </br></br>"
 		var idiomas = valor.Idiomas;

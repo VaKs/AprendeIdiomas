@@ -1,9 +1,10 @@
 function iniciar_perfil(){
 
-	// console.log("DNI", localStorage['dni']);
+	//console.log("DNI", localStorage['dni']);
 
+	comprobarSesion();
 	mostrarInfoPerfil();
-	mostrarPremium();
+	mostrarPremium(localStorage['dni']);
 	listar_notificaciones();
 	calendario();
 	

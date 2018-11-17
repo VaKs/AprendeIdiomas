@@ -2,15 +2,48 @@ var usuarioActual;
 
 var DatosPerfilActual;
 
+function comprobarSesion(){
+	var url = window.location.href;
+	switch(url.substring(url.lastIndexOf('/')+1)){
+		case "index.html":
+			if(!(localStorage['dni'] == "")) {
+				var boton = '<button id="prueba" onclick="SignOut()">logout</button>';
+				document.getElementById('form').innerHTML = boton;
+			}
+			break;
+		case "perfilUsuario.html":
+			if(localStorage['dni'] == "") {
+				window.location.href = "../index.html";
+			}
+			break;
+	}
+}
+
 function SignIn(){
-	localStorage['dni']="12345678A";
-	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(snapshot) {
-		usuarioActual=snapshot.val();
-		localStorage['nombre']=usuarioActual.nombre;
-	
-		window.location.href = "./web/perfilUsuario.html";
+	var usuario =document.getElementById('usuario').value;
+	var contrasena = document.getElementById('contrasena').value;
+	firebase.database().ref('Usuarios').child(usuario).on('value',function(snapshot) {
+		if(snapshot.exists()) {
+			usuarioActual=snapshot.val();
+			if(usuarioActual.password == contrasena){
+				localStorage['dni'] = document.getElementById('usuario').value;
+				localStorage['password'] = document.getElementById('contrasena').value;
+				localStorage['nombre'] = usuarioActual.nombre;
+				location.reload();
+			} else {
+				alert('La contraseña es incorrecta');
+			}
+		} else {
+			alert('No existe el usuario');
+		}
 	});
-	
+}
+
+function SignOut(){
+	localStorage['dni'] = "";
+	localStorage['password'] = "";
+	localStorage['nombre'] = "";
+	location.reload();
 }
 
 function mostrarDatosUsuario(){
@@ -46,8 +79,8 @@ function promocionarUsuario(){
 	});
 }
 
-function mostrarPremium() {
-	firebase.database().ref('Usuarios').child(localStorage['dni']).once('value').then(function(snapshot) {
+function mostrarPremium(dni) {
+	firebase.database().ref('Usuarios').child(dni).once('value').then(function(snapshot) {
 		if(snapshot.val().premium) {
 			var img = document.createElement('IMG');
 			img.setAttribute('src', "../img/premium.jpg");

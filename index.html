@@ -3,6 +3,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<!--<script language="javascript" type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
 		<link rel="stylesheet" href="./style/style.css" type="text/css">
+		<link rel="stylesheet" href="./style/login.css" type="text/css">
 		
 		<script language="javascript" type="text/javascript" src="./javaScript/Sesion.js"></script>
 		<script language="javascript" type="text/javascript" src="./javaScript/FirebaseHandler.js"></script>
@@ -19,7 +20,7 @@
 		
 		<meta name="tipo_contenido"  content="text/html;" http-equiv="content-type" charset="utf-8">
 	</head>
-	<body>
+	<body onload="comprobarSesion()">
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 			<div class="navbar-header">
@@ -33,7 +34,13 @@
 		  </div>
 		</nav>
 		<div id="container">
-			<button id="prueba" class="btn btn-success" onclick="SignIn()">Sign in</button>			
+			<div class="login-page">
+			  <div id = "form" class="form">
+			      <input id = "usuario" type="text" placeholder="Usuario"/>
+			      <input id= "contrasena" type="password" placeholder="Contraseña"/>
+			      <button id="prueba" onclick="SignIn()">login</button>
+			  </div>
+			</div>
 		</div>
 	</body>
 </html>
