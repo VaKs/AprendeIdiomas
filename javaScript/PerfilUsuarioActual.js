@@ -1,7 +1,8 @@
 function iniciar_perfil(){
 
+	comprobarSesion();
 	mostrarInfoPerfil();
-	mostrarPremium();
+	mostrarPremium(localStorage['dni']);
 	listar_notificaciones();
 	calendario();
 	verificarBotonCrearAnuncio();

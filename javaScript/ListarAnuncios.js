@@ -19,21 +19,21 @@ function mostrarAnuncios(pidioma,pnivel ){
         
         anuncioOutput =anuncioOutput+ "<h3>Profesor: <a onclick='verPerfil(\"" + dniProfe + "\")'>"+valor.nombre+"</a></h3> ";
 				
-				var idiomas = anuncioSnapshot.val().Idiomas;
+				var idiomasSnapshot = anuncioSnapshot.child("Idiomas");
 				var pasafiltro = false;
-				for(var i in idiomas) {
-					var idioma = idiomas[i].Idioma;
-					var nivel = idiomas[i].Nivel;
-					var coste = idiomas[i].coste;
+				idiomasSnapshot.forEach(idiomaSnapshot => {
+					var idiomaActual = idiomaSnapshot.val();
+					var idioma = idiomaActual.Idioma;
+					var nivel = idiomaActual.Nivel;
+					var coste = idiomaActual.coste;
 					if(idioma == pidioma && nivel == pnivel){pasafiltro = true;}
-					var idIdioma="#"+dniProfe;
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
 
-						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value='"+idioma+"'><input type='hidden' id="+dniProfe+i+" value="+nivel+"'>";
+						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value='"+idioma+"'><input id='nivel_"+dniProfe+"' type='hidden' value='"+nivel+"'>";
 					
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
-				}
+				});
 				anuncioOutput = anuncioOutput+"<p id='txtHorario'>Horario disponible:</p>";
 				anuncioOutput = anuncioOutput+"<div class='custom-select' style='width:200px;'>";
 				anuncioOutput = anuncioOutput+"<select id = 'horario_"+dniProfe+"' class='btn btn-primary dropdown-toggle'>";
@@ -98,7 +98,7 @@ function solicitarClase(profe,nombreProfe){
 			if(input_radio[x].checked){
 				
 				var idiomaSele = input_radio[x].value;
-				var nivel = profe+x;
+				var nivel = "nivel_"+profe;
 				var IdiomaNiv = document.getElementById(nivel).value;
 				
 			}
@@ -140,7 +140,6 @@ function solicitarClase(profe,nombreProfe){
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 				guarda = dniAlumno;
 				swal("Exito","Solicitud enviada correctamente","success");
-				//mostrar_boton();
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
 
 		}else{
