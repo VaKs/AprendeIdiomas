@@ -12,8 +12,7 @@ function listar_notificaciones(){
 		listaOrdenada.forEach(notificacionSnapshot => {
 			var key = notificacionSnapshot.key;
 			var notificacion = notificacionSnapshot.val();
-			console.log("DESCRIP", notificacion.tipo);
-
+			
 			// output =output+ "<li><i>"+ notificacion.descripcion;
 
 			if(notificacion.tipo != "clase"){
