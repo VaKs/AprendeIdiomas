@@ -44,7 +44,6 @@ $( document ).ready(function() {
 		var reseñas = valor.Caracteristicas.Reseñas;
 
 		for(var i in reseñas) {
-			console.log("TEST", reseñas[i] )
 			listaReseñas = listaReseñas + "<span> <i class='fa fa-star' aria-hidden='true'></i>  <i>" + reseñas[i]+ " </i> </span> </br></br>";
 		}
 
