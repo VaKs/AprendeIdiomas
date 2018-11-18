@@ -7,11 +7,19 @@
 	<link rel="stylesheet" href="../style/style.css" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+	<link rel="stylesheet" href="../dist/css/bootstrap-multiselect.css" type="text/css">
+	<script type="text/javascript" src="../dist/js/bootstrap-multiselect.js"></script>>
+	<!-- 
+	<link rel="stylesheet" href="css/bootstrap-multiselect/bootstrap-multiselect.css" type="text/css">
+ 	<script type="text/javascript" src="js/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+		 -->
+
 	<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/Manejoclases.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/PerfilUsuarioActual.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/calendario.js"></script>
+	<script language="javascript" type="text/javascript" src="../javaScript/accionesSesion.js"></script>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -22,7 +30,6 @@
 	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>
-
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
 </head>
@@ -53,6 +60,7 @@
 		<div class="tab-content">
 			<div id="tuPerfil" class="tab-pane fade in active">
 
+
 				<div class="row">
 					<div class="col-xs-3 col-md-3">
 						<img src="../img/us.png" border="1" width="100%">
@@ -65,16 +73,38 @@
 						</br>
 						<strong id="valoracion" style="text-transform: uppercase;color: #d8b500"></strong> </br>
 						</br>
-						<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar perfil</button> -->
-						<button type="button" class="btn btn-warning" onclick="openModalEditarPerfil()"><i class="fa fa-pencil-square-o"
-							 aria-hidden="true"></i> Editar perfil</button>
 
-						<button id="classtest" class="btn btn-primary btnPromocionar" onclick="promocionarUsuario()"> <i class="fa fa-hand-o-up"
-							 aria-hidden="true"></i> Promocionar Usuario</button><br>
+
 					</div>
 					<div class="col-xs-3 col-md-3">
 						</br>
 						<div id="premium" align="right"></div>
+					</div>
+
+					<div class="col-xs-12 col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="col-xs-12 col-md-12" style="margin:0px;padding:0px">
+									<div class="col-xs-4 col-md-4">
+										<button style="width:100%" type="button" class="btn btn-warning" onclick="openModalEditarPerfil()"><i class="fa fa-pencil-square-o"
+											 aria-hidden="true"></i> Editar perfil</button>
+
+									</div>
+
+									<div class="col-xs-4 col-md-4">
+										<button style="width:100%" id="classtest" class="btn btn-primary btnPromocionar" onclick="promocionarUsuario()">
+											<i class="fa fa-hand-o-up" aria-hidden="true"></i> Promocionar Usuario</button><br>
+									</div>
+						
+									<div class="col-xs-4 col-md-4">
+										<button style="width:100%" disabled="true" id="btnCrearAnuncio" class="btn btn-primary" onclick="openModalCrearAnuncio()">
+											<i class="fa fa-newspaper-o" aria-hidden="true"></i>&nbsp;Crear anuncio</button><br>
+									</div>
+									<div class="col-xs-6 col-md-6">
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 				</div>
@@ -156,9 +186,7 @@
 
 	<div id="calInfo"></div>
 
-
-
-	<!-- Modal -->
+	<!-- Modal Editar Perfil -->
 	<div class="modal fade" id="modalEditarPerfil" role="dialog">
 		<div class="modal-dialog">
 
@@ -201,7 +229,7 @@
 					<div class="panel panel-warning">
 						<div class="panel-heading"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Información Académica</div>
 						<div class="panel-body">
-							
+
 							<div class="form-group">
 								<label for="exampleInputPassword1">Estudios</label>
 								<textarea class="form-control" rows="5" id="estudiosPerfil" placeholder="Soy una persona..."></textarea>
@@ -220,15 +248,80 @@
 		</div>
 	</div>
 
+	<!-- Modal Crear Anuncio -->
+	<div class="modal fade" id="modalCrearAnuncio" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><i class="fa fa-newspaper-o" aria-hidden="true"></i> Crear anuncio</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="panel panel-warning">
+						<div class="panel-heading"><i class="fa fa-language" aria-hidden="true"></i> Seleccion de idiomas </div>
+						<div class="panel-body">
+
+							<select class="form-control" id="idiomasSelect" multiple="multiple" onchange="selectedIdioma()">
+								<option value="Ingles - A1">Ingles - A1</option>
+								<option value="Ingles - A2">Ingles - A2</option>
+								<option value="Ingles - A3">Ingles - A3</option>
+								<option value="Aleman - C1">Aleman - C1</option>
+								<option value="Aleman - C2">Aleman - C2</option>
+								<option value="Frances - F1">Frances - F1</option>
+								<option value="Frances - F3">Frances - F3</option>
+								<option value="Italiano - I1">Italiano - I1</option>
+								<option value="Italiano - I2">Italiano - I2</option>
+								<option value="Italiano - I3">Italiano - I3</option>
+							</select>
+
+							</br></br>
+
+							<div id="listaPrecio">
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+
+					<button type="button" class="btn btn-success" onclick="crearAnuncio()"> <i class="fa fa-floppy-o" aria-hidden="true"></i>
+						Crear</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 
-	<script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			$('#idiomasSelect').multiselect({
+				buttonWidth: '100%',
+
+				nonSelectedText: 'No hay idiomas seleccionados',
+				nSelectedText: ' Idiomas seleccionados',
+				numberDisplayed: 1,
+
+			});
+
+		});
+
 		$(document).ready(function () {
 			$(".nav-tabs a").click(function () {
 				$(this).tab('show');
 			});
+
 		});
+
+
 	</script>
+
 
 </body>
 
