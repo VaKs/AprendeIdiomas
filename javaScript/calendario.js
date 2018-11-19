@@ -162,7 +162,7 @@ function mostrarInformacionClase(dia) {
 			if (clases[c].profesor == localStorage['dni']) {
 				output = output + "<li>" + clases[c].hora + ": Dar clase de " + clases[c].idioma + " a " + clases[c].nombreSolicitante + "</li>";
 			} else {
-				output = output + "<li>" + clases[c].hora + ": Recibir clase de " + clases[c].idioma + " a " + clases[c].nombreSolicitante + "</li>";
+				output = output + "<li>" + clases[c].hora + ": Recibir clase de " + clases[c].idioma + " por " + clases[c].nombreProfe + "</li>";
 			}
 		}
 	}

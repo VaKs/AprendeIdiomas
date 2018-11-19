@@ -12,8 +12,6 @@ function listar_notificaciones(){
 		listaOrdenada.forEach(notificacionSnapshot => {
 			var key = notificacionSnapshot.key;
 			var notificacion = notificacionSnapshot.val();
-			
-			// output =output+ "<li><i>"+ notificacion.descripcion;
 
 			if(notificacion.tipo != "clase"){
 				output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
@@ -27,13 +25,6 @@ function listar_notificaciones(){
 				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
 				output = output + "</strong>";
 			}
-			
-			// if(notificacion.tipo == "clase"){
-			// 	output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
-			// 	"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
-			// 	"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
-			// }
-			// output = output + "</i></li>";
 		});
 
 
@@ -60,11 +51,15 @@ function aceptar_clase(key){
 		clase.nombreProfe = notificacion.nombreProfe;
 		clase.nombreSolicitante=notificacion.nombreSolicitante;
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
+		firebase.database().ref('Usuarios').child(clase.dnialumno).child('clases').push(clase);
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		var notificacionAceptacion = new Object();
-		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.año+"-"+notificacion.hora;
-		
+		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		notificarUsuario(notificacion.solicitante,notificacionAceptacion);
+		
+		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
+		notificarUsuario(notificacion.profesor,notificacionAceptacion);
+		
 		calendario();
 	});
 }

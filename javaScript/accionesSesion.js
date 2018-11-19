@@ -327,8 +327,13 @@ function crearAnuncio() {
 		argAnuncio.Idiomas = listaIdiomasArg;
 		argAnuncio.horario = listaHorarioArg;
 
-		firebase.database().ref('Anuncios').push(argAnuncio);
-
+		firebase.database().ref('Anuncios').child(localStorage['dni']).set({
+			nombre: DatosPerfilActual.nombre + " " + DatosPerfilActual.apellido,
+			premium: DatosPerfilActual.premium,
+			Idiomas: listaIdiomasArg,
+			horario: listaHorarioArg
+		});
+		
 		swal("Exito", "Anuncio creado exitosamente", "success");
 		verificarBotonCrearAnuncio();
 	}
