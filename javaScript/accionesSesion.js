@@ -100,17 +100,17 @@ function selectedIdioma() {
 
 		let id = idiomaPrecio.idioma.trim() + "_" + idiomaPrecio.nivel.trim();
 
-		output=output+"<div class='col-xs-6 col-md-6'>";
+		output = output + "<div class='col-xs-6 col-md-6'>";
 		output = output + "<li> Idioma: " + idiomaPrecio.idioma + " - Nivel " + idiomaPrecio.nivel;
-		output=output+"</div>";
-		output=output+"<div class='col-xs-6 col-md-6'> <div class='input-group'> <span class='input-group-addon'> <i class='fa fa-money' aria-hidden='true'></i> Tokens</span>";
+		output = output + "</div>";
+		output = output + "<div class='col-xs-6 col-md-6'> <div class='input-group'> <span class='input-group-addon'> <i class='fa fa-money' aria-hidden='true'></i> Tokens</span>";
 		output = output + "<input onchange='setPrecioIdioma(this.id, this.value)' type='number' class='form-control' id='" + id + "' placeholder='Enter email'> </div>";
 		output = output + "</li>";
-		output=output+"</br></div>";
+		output = output + "</br></div>";
 
 	});
 
-	output=output+"</div>";
+	output = output + "</div>";
 
 	document.getElementById('listaPrecio').innerHTML = output;
 
@@ -147,21 +147,191 @@ function setPrecioIdioma(id, valor) {
 
 function crearAnuncio() {
 
-	listaIdiomaPrecio.forEach(function (idiomaPrecio) {
 
-		var arg = new Object();
-		arg.Idioma = idiomaPrecio.idioma.trim();
-		arg.Nivel = idiomaPrecio.nivel.trim();
-		arg.coste = idiomaPrecio.coste;
+	var horasLunes = $('select#horasLunes').val();
+	var horasMartes = $('select#horasMartes').val();
+	var horasMiercoles = $('select#horasMiercoles').val();
+	var horasJueves = $('select#horasJueves').val();
+	var horasViernes = $('select#horasViernes').val();
+	var horasSabado = $('select#horasSabado').val();
+	var horasDomingo = $('select#horasDomingo').val();
 
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('Idiomas').push(arg);
-		firebase.database().ref('Anuncios').child(localStorage['dni']).child('Idiomas').push(arg);
+	var anioSeleccionado = $('select#anioSeleccionado').val();
+	var hoy = new Date();
+	var mesActual = hoy.getMonth() + 1;
 
-		$('#modalCrearAnuncio').modal('hide');
+	var arg = new Object();
+	var listaHorarioArg = [];
+	var listaIdiomasArg = [];
+
+	for (var mes = mesActual; mes < 13; mes++) { //para cada mes
+
+		hoy = new Date(anioSeleccionado, mes - 1, 1); //el mes comienza en enero = 0 y domingo=0
+
+		let primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+		let ultimoDia = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+
+		for (var fechaDia = primerDia.getDate(); fechaDia < ultimoDia.getDate() + 1; fechaDia++) {
+			hoy = new Date(anioSeleccionado, mes - 1, fechaDia); //el mes comienza en enero = 0
+
+			let idDiaFecha = hoy.getDay();
+
+			switch (idDiaFecha) {
+				case 1: //LUNES
+
+					horasLunes.forEach(horaLunes => {
+
+						arg = new Object();
+						
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = horaLunes;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 2: //MARTES 
+
+					horasMartes.forEach(hora => {
+
+						arg = new Object();
+
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 3: //MIERCOLES
+
+					horasMiercoles.forEach(hora => {
+
+						arg = new Object();
+
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 4:	//JUEVES
+
+					horasJueves.forEach(hora => {
+
+						arg = new Object();
+
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 5: //VIERNES
+
+					horasViernes.forEach(hora => {
+
+						arg = new Object();
+
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 6: //SABADO
+
+					horasSabado.forEach(hora => {
+
+						arg = new Object();
+						
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+				case 0: //DOMINGO
+
+					horasDomingo.forEach(hora => {
+
+						arg = new Object();
+						
+						arg.anyo = Number(anioSeleccionado);
+						arg.dia = fechaDia;
+						arg.estado = "disponible";
+						arg.hora = hora;
+						arg.mes = mes;
+
+						listaHorarioArg.push(arg);
+
+					});
+
+					break;
+			}
+
+		}
+
+	}
+
+
+	if (listaIdiomaPrecio.length > 0) {
+
+		listaIdiomaPrecio.forEach(function (idiomaPrecio) {
+
+			var arg = new Object();
+			arg.Idioma = idiomaPrecio.idioma.trim();
+			arg.Nivel = idiomaPrecio.nivel.trim();
+			arg.coste = idiomaPrecio.coste;
+
+			listaIdiomasArg.push(arg);
+
+			firebase.database().ref('Usuarios').child(localStorage['dni']).child('Idiomas').push(arg);
+
+			$('#modalCrearAnuncio').modal('hide');
+
+		});
+
+		var argAnuncio = new Object();
+		argAnuncio.dni = localStorage['dni'];
+		argAnuncio.nombre = DatosPerfilActual.nombre + " " + DatosPerfilActual.apellido;
+		argAnuncio.premium = DatosPerfilActual.premium;
+		argAnuncio.Idiomas = listaIdiomasArg;
+		argAnuncio.horario = listaHorarioArg;
+
+		firebase.database().ref('Anuncios').push(argAnuncio);
+
 		swal("Exito", "Anuncio creado exitosamente", "success");
 		verificarBotonCrearAnuncio();
-
-	});
+	}
 }
 
 function verificarBotonCrearAnuncio() {
