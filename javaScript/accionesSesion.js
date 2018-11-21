@@ -24,12 +24,19 @@ function guardarEditarPerfil() {
 
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('nombre').set(nombreNuevo);
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('apellido').set(apellidoNuevo);
-	firebase.database().ref('Anuncios').child(localStorage['dni']).child('nombre').set(nombreNuevo + ' ' + apellidoNuevo);
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Localidad').set(localidadNuevo);
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Descripcion').set(descripcionNuevo);
-
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Estudios').set(EstudiosNuevo);
+	
+	firebase.database().ref('Anuncios').child(localStorage['dni']).on('value', function (snapshot) {
 
+		if(snapshot.val() != null){
+			firebase.database().ref('Anuncios').child(localStorage['dni']).child('nombre').set(nombreNuevo + ' ' + apellidoNuevo);
+		}
+		
+	});
+	
+	
 	$('#modalEditarPerfil').modal('hide');
 }
 
