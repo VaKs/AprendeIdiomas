@@ -141,7 +141,7 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 
 	var output = new Object();
 	output.descripcion = "Se ha pagado la clase";
-	output.precio = "10";
+	output.precio = cantidad;
 	output.receptor = dniReceptor;
 	output.emisor = dniEmisor;
 

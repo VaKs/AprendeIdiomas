@@ -92,5 +92,30 @@ function iniciar_perfil() {
 	listar_notificaciones();
 	calendario();
 	verificarBotonCrearAnuncio();
+	pagaClase();
+	setInterval(pagaClase, 60000);
 
 }
+function pagaClase() {
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').once('value').then(function(snapshot) {
+		fecha = new Date();
+		mes = fecha.getMonth()+1;
+		dia = fecha.getDate();
+		year = fecha.getFullYear();
+		hora = fecha.getHours()-1;
+		minuto = fecha.getMinutes()
+		
+		snapshot.forEach(claseSnapshot => {
+			clase = claseSnapshot.val();
+			keyClase = claseSnapshot.key;
+			if(clase.hora===hora+":"+minuto) alert("holi");
+			if(clase.dia==dia && clase.mes==mes && clase.anyo==year && clase.hora===hora+":"+minuto){
+				transaccionTokens(clase.dnialumno, clase.profesor, clase.precio);
+			}
+			
+			
+		});
+
+	});
+}
+	
