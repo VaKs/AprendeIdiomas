@@ -34,7 +34,7 @@ function mostrarAnuncios(pidioma,pnivel ){
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
 				});
-				anuncioOutput = anuncioOutput+"<p id='txtHorario'>Horario disponible:</p>";
+				anuncioOutput = anuncioOutput+"<p id='txtHorario_"+dniProfe+"'>Horario disponible:</p>";
 				anuncioOutput = anuncioOutput+"<div class='custom-select' style='width:200px;'>";
 				anuncioOutput = anuncioOutput+"<select id = 'horario_"+dniProfe+"' class='btn btn-primary dropdown-toggle'>";
 				anuncioOutput = anuncioOutput+"<option value='0'> Seleccione dia: </option>";
@@ -81,7 +81,7 @@ function seleccionarDia(dni,dia,mes,anyo){
 				var fecha = horario.dia+"/"+horario.mes+"/"+horario.anyo;
 				var hora = horario.hora;
 				$("#horario_"+dni).append(new Option(hora, idHorario));	
-				document.getElementById("txtHorario").innerHTML = "Horario disponible para "+fecha+":";
+				document.getElementById("txtHorario_"+dni).innerHTML = "Horario disponible para "+fecha+":";
 			}
 		});
 	
