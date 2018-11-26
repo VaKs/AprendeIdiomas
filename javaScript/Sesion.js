@@ -56,6 +56,19 @@ function mostrarDatosUsuario() {
 }
 
 function promocionarUsuario() {
+	
+	var premium;
+	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value', function(snapshot) {
+		premium = snapshot.val().premium;
+		});
+		
+	if(premium) {
+			swal("Error, ya esta asociado a la cuenta premium");
+			
+		
+	
+		}else{
+			
 	//Consulta los tokens del usuario
 	let tokens = new Promise((resolve, reject) => {
 		firebase.database().ref('Usuarios').child(localStorage['dni']).on('value', function (snapshot) {
@@ -79,12 +92,15 @@ function promocionarUsuario() {
 	
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
-			alert("Tu anuncio ha sido promocionado.");
+			swal("Tu anuncio ha sido promocionado.");
 
 		} else {
-			alert("No tienes suficientes tokens.");
+			swal("No tienes suficientes tokens.");
 		}
 	});
+	}
+	
+	
 }
 
 
