@@ -5,13 +5,13 @@ function comprobarSesion(){
 	var url = window.location.href;
 	switch(url.substring(url.lastIndexOf('/')+1)){
 		case "index.html":
-			if(!(localStorage['dni'] == "")) {
+			if(!(localStorage['dni'] == "") && !(localStorage['dni'] == null)) {
 				var boton = '<button id="prueba" onclick="SignOut()">logout</button>';
 				document.getElementById('form').innerHTML = boton;
 			}
 			break;
 		case "perfilUsuario.html":
-			if(localStorage['dni'] == "") {
+			if((localStorage['dni'] == "") || (localStorage['dni'] == null)) {
 				window.location.href = "../index.html";
 			}
 			break;
