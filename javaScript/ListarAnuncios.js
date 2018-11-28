@@ -139,7 +139,7 @@ function solicitarClase(profe,nombreProfe){
 				
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
 				guarda = dniAlumno;
-				swal("Exito","Solicitud enviada correctamente","success");
+				//swal("Exito","Solicitud enviada correctamente","success");
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
 
 		}else{

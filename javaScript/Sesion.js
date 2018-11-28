@@ -30,10 +30,10 @@ function SignIn(){
 				localStorage['nombre'] = usuarioActual.nombre;
 				location.reload();
 			} else {
-				alert('La contraseña es incorrecta');
+				swal("Error","La contraseña es incorrecta","error");
 			}
 		} else {
-			alert('No existe el usuario');
+			swal("Error","No existe el usuario","error");
 		}
 	});
 }
@@ -63,7 +63,7 @@ function promocionarUsuario() {
 		});
 		
 	if(premium) {
-			swal("Error, ya esta asociado a la cuenta premium");
+			swal("Error","Ya esta asociado a la cuenta premium","error");
 			
 		
 	
@@ -92,10 +92,10 @@ function promocionarUsuario() {
 	
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
-			swal("Tu anuncio ha sido promocionado.");
+			
 
 		} else {
-			swal("No tienes suficientes tokens.");
+			swal("Error","No tienes suficientes tokens.","error");
 		}
 	});
 	}
