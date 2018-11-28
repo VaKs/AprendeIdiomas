@@ -107,7 +107,7 @@ function comprarTokens(){
 		
 }
 
-//function retirarDinero(){
+function retirarDinero(){
 	
 	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
