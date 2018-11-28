@@ -108,9 +108,9 @@ function pagaClase() {
 		snapshot.forEach(claseSnapshot => {
 			clase = claseSnapshot.val();
 			keyClase = claseSnapshot.key;
-			if(clase.hora===hora+":"+minuto) alert("holi");
 			if(clase.dia==dia && clase.mes==mes && clase.anyo==year && clase.hora===hora+":"+minuto){
 				transaccionTokens(clase.dnialumno, clase.profesor, clase.precio);
+				firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(keyClase).remove();
 			}
 			
 			
