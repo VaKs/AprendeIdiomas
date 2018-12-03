@@ -110,6 +110,8 @@ function solicitarClase(profe,nombreProfe){
 	var idhorario = selectBox.options[selectBox.selectedIndex].value;
 	
 	firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).once('value').then(function(snapshot) {
+
+
 		var horario=snapshot.val();
 		var hora = horario.hora;
 		var dniAlumno = localStorage['dni'];
@@ -117,9 +119,8 @@ function solicitarClase(profe,nombreProfe){
 		var dia = horario.dia;
 		var anyo = horario.anyo;
 		
-		
 		var output = new Object();
-			output.descripcion = "Solicitud de clase";
+			
 			output.estado = "pendiente";
 			output.dia= dia;
 			output.mes=mes;
@@ -130,22 +131,35 @@ function solicitarClase(profe,nombreProfe){
 			output.profesor = profe;
 			output.nombreProfe=nombreProfe;
 			output.idHorario= idhorario;
-			output.tipo = "clase";
 			output.nombreSolicitante=localStorage['nombre'];
-			output.precio = 10; //to do 
+			output.precio = 10; //to do			
 		
-		
+	
 		if((idiomaSele != undefined) && (horario != "")){
+				const refProfe = firebase.database().ref('Usuarios').child(profe).child('clases').push(output);
+				const claseKeyProfe = refProfe.key;
+
+				const refAlumno = firebase.database().ref('Usuarios').child(dniAlumno).child('clases').push(output);
+				const claseKeyAlumno = refAlumno.key;
+				
+				output.tipo = "clase";
+				output.descripcion = "Solicitud de clase";
+				output.claseKeyProfe = claseKeyProfe;
+				output.claseKeyAlumno = claseKeyAlumno;
 				
 				firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
-				guarda = dniAlumno;
+				
+				firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(claseKeyAlumno).child('claseKeyAlumno').set(claseKeyAlumno);
+				firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(claseKeyAlumno).child('claseKeyProfe').set(claseKeyProfe);
+				
+				firebase.database().ref('Usuarios').child(profe).child('clases').child(claseKeyProfe).child('claseKeyAlumno').set(claseKeyAlumno);
+				firebase.database().ref('Usuarios').child(profe).child('clases').child(claseKeyProfe).child('claseKeyProfe').set(claseKeyProfe);
 				//swal("Exito","Solicitud enviada correctamente","success");
 				firebase.database().ref('Anuncios').child(profe).child("horario").child(idhorario).child("estado").set("ocupado");
-
 		}else{
 			swal("Cuidado","Elija Idioma y fecha","warning");
 		}
-		anunant=profe;
+
 	});
 }	
 		

@@ -39,25 +39,12 @@ function aceptar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
 		
-		var clase = new Object();
-		clase.dnialumno = notificacion.solicitante;
-		clase.dia = notificacion.dia;
-		clase.mes = notificacion.mes;
-		clase.anyo = notificacion.anyo;
-		clase.hora = notificacion.hora;
-		clase.idioma = notificacion.idioma;
-		clase.precio = notificacion.precio;
-		clase.profesor = notificacion.profesor;
-		clase.nombreProfe = notificacion.nombreProfe;
-		clase.nombreSolicitante=notificacion.nombreSolicitante;
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
-		firebase.database().ref('Usuarios').child(clase.dnialumno).child('clases').push(clase);
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(notificacion.claseKeyProfe).child("estado").set("aceptada");
+		firebase.database().ref('Usuarios').child(notificacion.solicitante).child('clases').child(notificacion.claseKeyAlumno).child("estado").set("aceptada");
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		var notificacionAceptacion = new Object();
 		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		notificarUsuario(notificacion.solicitante,notificacionAceptacion);
-		
-		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		notificarUsuario(notificacion.profesor,notificacionAceptacion);
 		
 		calendario();
@@ -68,13 +55,17 @@ function rechazar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
 		var idhorario=notificacion.idHorario;
+		var claseKeyProfe=notificacion.claseKeyProfe;
+		var claseKeyAlumno = notificacion.claseKeyAlumno;
+		var dniAlumno=notificacion.solicitante;
 		var notificacionRechazada = new Object();		
 		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		
 		notificarUsuario(notificacion.solicitante,notificacionRechazada);
 
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).child('estado').set('rechazada');
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
+		firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(claseKeyAlumno).remove();
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(claseKeyProfe).remove();
 		firebase.database().ref('Anuncios').child(localStorage['dni']).child("horario").child(idhorario).child("estado").set("disponible");
 	});	
 }

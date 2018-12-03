@@ -5,7 +5,7 @@ function calendario(paramMes, paramYear, selection) {
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value', function (snapshot) {
 		tabla = "";
 		fecha = new Date();
-		dias = ["Domingo", "Lunes", "Martes", "Mi�rcoles", "Jueves", "Viernes", "S�bado"];
+		dias = ["Domingo", "Lunes", "Martes", "Mi�rcoles", "Jueves", "Viernes", "Sabado"];
 		meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 		diasMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		if (selection == true) {
@@ -97,7 +97,7 @@ function calendario(paramMes, paramYear, selection) {
 					// se da clase hoy?
 					for (c = 0; c < clases.length; c++) {
 						if (clases[c].dia == a) {
-							if (clases[c].profesor == localStorage['dni']) {
+							if (clases[c].estado != "pendiente") {
 								doyClase = true;
 							} else {
 								reciboClase = true;
@@ -129,7 +129,15 @@ function calendario(paramMes, paramYear, selection) {
 						}
 					} else {
 						if ((a == numDia) && (mes == fecha.getMonth()) && (year == fecha.getFullYear())) {
-							tabla = (tabla + "<td id='hoy'>" + a + "</td>");
+							if (doyClase) {
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
+								doyClase = false;
+							} else if (reciboClase) {
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
+								reciboClase = false;
+							} else {
+								tabla = (tabla + "<td id='hoy'>" + a + "</td>");
+							}
 						} else {
 							if (doyClase) {
 								tabla = (tabla + "<td id='doyClase' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
@@ -188,7 +196,7 @@ function calendarioAnuncio(dni, paramMes, paramYear, selection) {
 	firebase.database().ref('Anuncios').child(dni).child('horario').on('value', function (snapshot) {
 		tabla = "";
 		fecha = new Date();
-		dias = ["Domingo", "Lunes", "Martes", "Mi�rcoles", "Jueves", "Viernes", "S�bado"];
+		dias = ["Domingo", "Lunes", "Martes", "Mi�rcoles", "Jueves", "Viernes", "Sabado"];
 		meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 		diasMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		if (selection == true) {
