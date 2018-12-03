@@ -1,7 +1,5 @@
-var clases = [];
-
 function calendario(paramMes, paramYear, selection) {
-	clases = [];
+	var clases = [];
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').on('value', function (snapshot) {
 		tabla = "";
 		fecha = new Date();
@@ -94,13 +92,15 @@ function calendario(paramMes, paramYear, selection) {
 					}
 					empezar = 0;
 
+					doyClase = false;
+					reciboClase = false;
 					// se da clase hoy?
 					for (c = 0; c < clases.length; c++) {
 						if (clases[c].dia == a) {
-							if (clases[c].estado != "pendiente") {
-								doyClase = true;
-							} else {
+							if (clases[c].estado === "pendiente") {
 								reciboClase = true;
+							} else {
+								doyClase = true;
 							}
 						}
 					}
@@ -108,21 +108,17 @@ function calendario(paramMes, paramYear, selection) {
 					if ((i == 5) || (i == 6)) {
 						if ((a == numDia) && (mes == fecha.getMonth()) && (year == fecha.getFullYear())) {
 							if (doyClase) {
-								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								doyClase = false;
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else if (reciboClase) {
-								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								reciboClase = false;
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else {
 								tabla = (tabla + "<td id='hoy'>" + a + "</td>");
 							}
 						} else {
-							if (doyClase) {
-								tabla = (tabla + "<td id='doyClase' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								doyClase = false;
-							} else if (reciboClase) {
-								tabla = (tabla + "<td id='reciboClase' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								reciboClase = false;
+							if (reciboClase) {
+								tabla = (tabla + "<td id='reciboClase' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
+							} else if (doyClase) {
+								tabla = (tabla + "<td id='doyClase' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else {
 								tabla = (tabla + "<td id='finDe'>" + a + "</td>");
 							}
@@ -130,21 +126,17 @@ function calendario(paramMes, paramYear, selection) {
 					} else {
 						if ((a == numDia) && (mes == fecha.getMonth()) && (year == fecha.getFullYear())) {
 							if (doyClase) {
-								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								doyClase = false;
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else if (reciboClase) {
-								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								reciboClase = false;
+								tabla = (tabla + "<td id='hoy' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else {
 								tabla = (tabla + "<td id='hoy'>" + a + "</td>");
 							}
 						} else {
-							if (doyClase) {
-								tabla = (tabla + "<td id='doyClase' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								doyClase = false;
-							} else if (reciboClase) {
-								tabla = (tabla + "<td id='reciboClase' onmouseover='mostrarInformacionClase(" + a + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
-								reciboClase = false;
+							if (reciboClase) {
+								tabla = (tabla + "<td id='reciboClase' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
+							} else if (doyClase) {
+								tabla = (tabla + "<td id='doyClase' onmouseover='mostrarInformacionClase(" + a + "," + mes + "," + year + ")' onmouseout='borrarInformacionClase()'>" + a + "</td>");
 							} else {
 								tabla = (tabla + "<td>" + a + "</td>");
 							}
@@ -158,25 +150,30 @@ function calendario(paramMes, paramYear, selection) {
 		}
 		tabla = (tabla + "</table>");
 		document.getElementById("calendario").innerHTML = tabla;
+		
 		selection = false;
 	});
 }
 
-function mostrarInformacionClase(dia) {
-	var td = document.getElementById("calInfo");
-	var output = "<ul>";
-	for (c = 0; c < clases.length; c++) {
-		if (clases[c].dia == dia) {
-			if (clases[c].profesor == localStorage['dni']) {
-				output = output + "<li>" + clases[c].hora + ": Dar clase de " + clases[c].idioma + " a " + clases[c].nombreSolicitante + "</li>";
-			} else {
-				output = output + "<li>" + clases[c].hora + ": Recibir clase de " + clases[c].idioma + " por " + clases[c].nombreProfe + "</li>";
+function mostrarInformacionClase(dia,mes,year) {
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').once('value').then(function (snapshot) {
+		var td = document.getElementById("calInfo");
+		var output = "<ul id='marca_"+dia+""+mes+""+year+"'></ul>";
+		td.innerHTML = output;
+		snapshot.forEach(claseSnapshot => {
+			var clase = claseSnapshot.val();
+			if (clase.dia == dia && clase.mes == mes + 1 && clase.anyo == year) {
+				if (clase.profesor == localStorage['dni']) {
+					$("#marca_"+dia+""+mes+""+year).append("<li>" + clase.hora + ": Dar clase de " + clase.idioma + " a " + clase.nombreSolicitante + "</li>");
+				} else {
+					$("#marca_"+dia+""+mes+""+year).append("<li>" + clase.hora + ": Recibir clase de " + clase.idioma + " por " + clase.nombreProfe + "</li>");
+				}
 			}
-		}
-	}
-	output = output + "</ul>";
-	sigueme();
-	td.innerHTML = output;
+		});
+		sigueme();
+		
+	});
+	
 }
 
 function borrarInformacionClase() {
@@ -192,7 +189,7 @@ function sigueme() {
 }
 
 function calendarioAnuncio(dni, paramMes, paramYear, selection) {
-	clases = [];
+	var clases = [];
 	firebase.database().ref('Anuncios').child(dni).child('horario').on('value', function (snapshot) {
 		tabla = "";
 		fecha = new Date();

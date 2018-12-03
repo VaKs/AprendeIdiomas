@@ -60,13 +60,14 @@ function rechazar_clase(key){
 		var dniAlumno=notificacion.solicitante;
 		var notificacionRechazada = new Object();		
 		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
-		
 		notificarUsuario(notificacion.solicitante,notificacionRechazada);
 
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(claseKeyAlumno).remove();
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(claseKeyProfe).remove();
 		firebase.database().ref('Anuncios').child(localStorage['dni']).child("horario").child(idhorario).child("estado").set("disponible");
+		
+		calendario();
 	});	
 }
 
