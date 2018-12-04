@@ -21,7 +21,7 @@ function comprobarSesion(){
 function SignIn(){
 	var usuario =document.getElementById('usuario').value;
 	var contrasena = document.getElementById('contrasena').value;
-	firebase.database().ref('Usuarios').child(usuario).on('value',function(snapshot) {
+	firebase.database().ref('Usuarios').child(usuario).once('value',function(snapshot) {
 		if(snapshot.exists()) {
 			usuarioActual=snapshot.val();
 			if(usuarioActual.password == contrasena){
@@ -38,6 +38,56 @@ function SignIn(){
 	});
 }
 
+function SignUp(mode){
+	if(!mode) {
+		var form = '<a href = "index.html"><img src="img/ic_arrow_back.png" align="left"></a>'
+			+'<input id= "usuario" type="text" placeholder="DNI"/>'
+			+'<input id= "contrasena" type="password" placeholder="Contraseña"/>'
+			+'<input id= "email" type="text" placeholder="Email"/>'
+			+'<input id= "nombre" type="text" placeholder="Nombre"/>'
+			+'<input id= "apellidos" type="text" placeholder="Apellidos"/>'
+			+'<input id= "localidad" type="text" placeholder="Localidad"/>'
+			+'<button style="background: #4CAF50;" id="prueba2" onclick="SignUp(true)">regístrate</button>';
+		document.getElementById('form').innerHTML = form;
+	} else {
+		var i = 0;
+		$("div#form > input").each(function () { if(this.value != '') { i++; } });
+
+		if(i < 6) {
+			swal("Error","Los campos son obligatorios","error");
+		} else {
+			var usuario = document.getElementById('usuario').value;
+			var usuarios = firebase.database().ref('Usuarios');
+			usuarios.child(usuario).once('value',function(snapshot) {
+				if(!snapshot.exists()) {
+					usuarios.child(usuario).set({
+						password: document.getElementById('contrasena').value,
+						email: document.getElementById('email').value,
+						nombre: document.getElementById('nombre').value,
+						apellido: document.getElementById('apellidos').value,
+						localidad: document.getElementById('localidad').value,
+						premium: false,
+						tokens: 0
+					}, function(error) {
+					    if (error) {
+					      swal("Error","No se ha podido registrar","error");
+					    } else {
+						    swal("Correcto","Se ha registrado correctamente. Ya puedes hacer el login","success").then((value) => {
+
+								location.reload();
+
+							});
+					    }
+					});
+				} else {
+					swal("Error","Ya existe el usuario","error");
+				}
+			});
+		}
+	}
+
+}
+
 function SignOut(){
 	localStorage['dni'] = "";
 	localStorage['password'] = "";
@@ -46,7 +96,7 @@ function SignOut(){
 }
 
 function mostrarDatosUsuario() {
-	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value', function (snapshot) {
+	firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function (snapshot) {
 		usuarioActual = snapshot.val();
 		var output = "<p> Nombre: " + usuarioActual.nombre + " </p>";
 		output = output + "<p> Apellido: " + usuarioActual.apellido + " </p>";
@@ -58,7 +108,7 @@ function mostrarDatosUsuario() {
 function promocionarUsuario() {
 	
 	var premium;
-	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value', function(snapshot) {
+	firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function(snapshot) {
 		premium = snapshot.val().premium;
 		});
 		
@@ -71,7 +121,7 @@ function promocionarUsuario() {
 			
 	//Consulta los tokens del usuario
 	let tokens = new Promise((resolve, reject) => {
-		firebase.database().ref('Usuarios').child(localStorage['dni']).on('value', function (snapshot) {
+		firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function (snapshot) {
 			usuarioActual = snapshot.val();
 			resolve(parseInt(usuarioActual.tokens));
 		});
@@ -82,7 +132,7 @@ function promocionarUsuario() {
 		if (res >= 5) {
 			
 			
-			firebase.database().ref('Anuncios').child(localStorage['dni']).on('value', function (snapshot) {
+			firebase.database().ref('Anuncios').child(localStorage['dni']).once('value', function (snapshot) {
 
 				if(snapshot.val() != null){
 					firebase.database().ref('Anuncios').child(localStorage['dni']).child('premium').set(true);
@@ -120,7 +170,7 @@ function mostrarPremium(dni) {
 
 function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 	let tokensEmisor = new Promise((resolve, reject) => {
-		firebase.database().ref('Usuarios').child(dniEmisor).on('value', function (snapshot) {
+		firebase.database().ref('Usuarios').child(dniEmisor).once('value', function (snapshot) {
 			resolve(parseInt(snapshot.val().tokens));
 		});
 	});
@@ -130,7 +180,7 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 	});
 
 	let tokensReceptor = new Promise((resolve, reject) => {
-		firebase.database().ref('Usuarios').child(dniReceptor).on('value', function (snapshot) {
+		firebase.database().ref('Usuarios').child(dniReceptor).once('value', function (snapshot) {
 			resolve(parseInt(snapshot.val().tokens));
 		});
 	});
@@ -151,7 +201,7 @@ function transaccionTokens(dniEmisor, dniReceptor, cantidad) {
 
 function mostrarInfoPerfil() {
 
-	firebase.database().ref('Usuarios').on('value', function (dato) {
+	firebase.database().ref('Usuarios').once('value', function (dato) {
 
 		var valor = null;
 
