@@ -9,7 +9,7 @@
 
 	<link rel="stylesheet" href="../dist/css/bootstrap-multiselect.css" type="text/css">
 	<script type="text/javascript" src="../dist/js/bootstrap-multiselect.js"></script>
-	
+
 	<script language="javascript" type="text/javascript" src="../javaScript/FirebaseHandler.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/Sesion.js"></script>
 	<script language="javascript" type="text/javascript" src="../javaScript/Manejoclases.js"></script>
@@ -96,6 +96,13 @@
 										<button style="width:100%" disabled="true" id="btnCrearAnuncio" class="btn btn-primary" onclick="openModalCrearAnuncio()">
 											<i class="fa fa-newspaper-o" aria-hidden="true"></i>&nbsp;Crear anuncio</button><br>
 									</div>
+
+									<div class="col-xs-4 col-md-4">
+										</br>
+										<button style="width:100%" disabled="true" id="btnModificarAnuncio" class="btn btn-primary" onclick="openModalModificarAnuncio()">
+											<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Modificar anuncio</button><br>
+									</div>
+
 									<div class="col-xs-6 col-md-6">
 									</div>
 								</div>
@@ -547,6 +554,315 @@
 
 					<button type="button" class="btn btn-success" onclick="crearAnuncio()"> <i class="fa fa-floppy-o" aria-hidden="true"></i>
 						Crear</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Modal Modificar Anuncio -->
+	<div class="modal fade" id="modalModificarAnuncio" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><i class="fa fa-newspaper-o" aria-hidden="true"></i> Modificar anuncio</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="panel panel-warning">
+						<div class="panel-heading"><i class="fa fa-language" aria-hidden="true"></i> Seleccion de idiomas </div>
+						<div class="panel-body">
+
+							<select class="form-control" id="idiomasSelectMod" multiple="multiple" onchange="selectedIdiomaMod()">
+								<option value="Ingles - A1">Ingles - A1</option>
+								<option value="Ingles - A2">Ingles - A2</option>
+								<option value="Ingles - B1">Ingles - B1</option>
+								<option value="Ingles - B2">Ingles - B2</option>
+								<option value="Ingles - C1">Ingles - C1</option>
+								<option value="Ingles - C2">Ingles - C2</option>
+								<option value="Aleman - A1">Aleman - A1</option>
+								<option value="Aleman - A2">Aleman - A2</option>
+								<option value="Aleman - B1">Aleman - B1</option>
+								<option value="Aleman - B2">Aleman - B2</option>
+								<option value="Aleman - C1">Aleman - C1</option>
+								<option value="Aleman - C2">Aleman - C2</option>
+								<option value="Frances - A1">Frances - A1</option>
+								<option value="Frances - A2">Frances - A2</option>
+								<option value="Frances - B1">Frances - B1</option>
+								<option value="Frances - B2">Frances - B2</option>
+								<option value="Frances - C1">Frances - C1</option>
+								<option value="Frances - C2">Frances - C2</option>
+
+							</select>
+
+							</br></br>
+
+							<div id="listaPrecioMod">
+
+							</div>
+
+						</div>
+					</div>
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><i class="fa fa-calendar" aria-hidden="true"></i> Seleccion de horario </div>
+						<div class="panel-body">
+
+							<div class="row">
+
+								<div class="col-xs-3 col-md-3" style="text-align:center">
+								</div>
+								<div class="col-xs-6 col-md-6" style="text-align:center">
+
+									<div class="input-group">
+										<span class="input-group-addon">Año</span>
+										<select class="form-control" id="anioSeleccionado">
+											<option value="2018">2018</option>
+											<option value="2019">2019</option>
+										</select>
+									</div>
+
+								</div>
+								<br /><br /><br />
+
+								<!-- LUNES -->
+								<div class="col-xs-4 col-md-4">
+
+									<div class="input-group">
+										<span class="input-group-addon">LUNES</span>
+									</div>
+
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasLunesMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+								</br></br>
+
+								<!-- MARTES -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">MARTES</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasMartesMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+								</br></br>
+
+								<!-- MIERCOLES -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">MIERCOLES</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasMiercolesMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+
+								</br></br>
+
+								<!-- JUEVES -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">JUEVES</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasJuevesMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+								</br></br>
+
+								<!-- VIERNES -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">VIERNES</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasViernesMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+								</br></br>
+
+								<!-- SABADO -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">SABADO</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasSabadoMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+								</br></br>
+
+								<!-- DOMINGO -->
+								<div class="col-xs-4 col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">DOMINGO</span>
+									</div>
+								</div>
+								<div class="col-xs-8 col-md-8">
+
+									<select class="form-control" id="horasDomingoMod" multiple="multiple" onchange="">
+										<option value="08:00">08:00</option>
+										<option value="08:30">08:30</option>
+										<option value="09:00">09:00</option>
+										<option value="09:30">09:30</option>
+										<option value="10:00">10:00</option>
+										<option value="10:30">10:30</option>
+										<option value="11:00">11:00</option>
+										<option value="11:30">11:30</option>
+										<option value="12:00">12:00</option>
+										<option value="12:30">12:30</option>
+										<option value="13:00">13:00</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+										<option value="15:00">15:00</option>
+										<option value="15:30">15:30</option>
+										<option value="16:00">16:00</option>
+										<option value="16:30">16:30</option>
+									</select>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+
+					<button type="button" class="btn btn-success" onclick="guardarModificacion()"> <i class="fa fa-floppy-o" aria-hidden="true"></i>
+						Guardar Modificacion</button>
 				</div>
 			</div>
 
