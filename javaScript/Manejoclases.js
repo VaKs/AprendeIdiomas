@@ -35,6 +35,7 @@ function listar_notificaciones(){
 }
 
 function aceptar_clase(key){
+	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).child('estado').set('aceptada');
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
@@ -48,6 +49,7 @@ function aceptar_clase(key){
 		notificarUsuario(notificacion.profesor,notificacionAceptacion);
 		
 		calendario();
+		mostrarClasesAcordadas();
 	});
 }
 
@@ -68,8 +70,53 @@ function rechazar_clase(key){
 		firebase.database().ref('Anuncios').child(localStorage['dni']).child("horario").child(idhorario).child("estado").set("disponible");
 		
 		calendario();
+		mostrarClasesAcordadas();
 	});	
 }
+
+
+function cancelar_clase(key){
+	
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(key).once('value').then(function(snapshot) {
+		
+		clase = snapshot.val();
+		dniAlumno=clase.solicitante;
+		dniProfe=clase.profesor;
+		idHorario=clase.idHorario;
+		notificacion=new Object();
+		notificacion.descripcion="Se ha cancelado la clase de "+clase.idioma+" de la fecha "+clase.dia+"/"+clase.mes+"/"+clase.anyo+" a las "+clase.hora;
+		
+		notificarUsuario(dniProfe,notificacion);
+		notificarUsuario(dniAlumno,notificacion);
+		firebase.database().ref('Anuncios').child(dniProfe).child("horario").child(idHorario).child("estado").set("disponible");
+		firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(clase.claseKeyAlumno).remove();
+		firebase.database().ref('Usuarios').child(dniProfe).child('clases').child(clase.claseKeyProfe).remove();
+		mostrarClasesAcordadas();
+		calendario();
+	});	
+
+}
+
+function mostrarClasesAcordadas(){
+	
+
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child("clases").on('value', function(snapshot){
+		$('#containerCancelados').html("");
+		
+		snapshot.forEach(Clasesvalor => {
+			 key = Clasesvalor.key;
+			 clase = Clasesvalor.val();
+			 if(clase.estado=="aceptada"){
+			 output = clase.idioma+" de la fecha "+clase.dia+"/"+clase.mes+"/"+clase.anyo+" a las "+clase.hora;
+			$('#containerCancelados').append("<li>"+output+"<br><button id='botonrechazar' class='btn btn-danger' onclick='cancelar_clase(\""+key+"\")'>Cancelar Clase</button></li>");
+			 }
+		});
+		
+	});
+	
+}
+	
+	
 
 var resolve;
 function comprarTokens(){

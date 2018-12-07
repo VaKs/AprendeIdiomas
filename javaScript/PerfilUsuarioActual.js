@@ -157,7 +157,7 @@ function iniciar_perfil() {
 
 	});
 
-
+	mostrarClasesAcordadas();
 	comprobarSesion();
 	mostrarInfoPerfil();
 	mostrarPremium(localStorage['dni']);
