@@ -13,25 +13,28 @@ function listar_notificaciones(){
 			var key = notificacionSnapshot.key;
 			var notificacion = notificacionSnapshot.val();
 
-			if(notificacion.tipo != "clase"){
-				output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
-			}
-			else{
-				if(notificacion.tipo == "rating"){
-				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
-
-				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
-				"<br><button id='botonaceptar' class='btn btn-success' onclick='sacarValoracion(\""+key+"\")'>Valorar</button> "
-				output = output + "</strong>";
-				
-				}	
-				else{
+			if(notificacion.tipo == "clase"){
 				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
 
 				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
 				"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
 				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
 				output = output + "</strong>";
+				
+				
+				
+			}
+			else{
+				if(notificacion.tipo == "rating"){
+				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
+
+				output = output + ": " + notificacion.dia +"/"+notificacion.mes+" a las " + notificacion.hora +" de " + notificacion.idioma+
+				"<br><button id='botonaceptar' class='btn btn-success' onclick='sacarValoracion(\""+key+"\")'>Valorar</button> "
+				output = output + "</strong>";
+				
+				}	
+				else{
+					output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
 				}
 			}
 		});
@@ -42,16 +45,43 @@ function listar_notificaciones(){
 	});
 	
 }
+var clavenotificacion;
 function sacarValoracion(key){
 	$('#modalValorar').modal({ backdrop: 'static', keyboard: false })
 	$('#modalValorar').modal('show');	
+	clavenotificacion = key;
+	
 }
 function guardarValoracion(){
-	var valoracion = document.getElementById("Valoracion").value;
+	var key = clavenotificacion;
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
+		var notificacion = snapshot.val();
+		
+		
+		
+		var valoracion = document.getElementById("Valoracion").value;
 	var calificacion = document.getElementById("calificacion").value;
-
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('caracteristicas').child('reseña').set(valoracion);
-	firebase.database().ref('Usuarios').child(localStorage['dni']).child('caracteristicas').child('valoracion').set(calificacion);
+		var output = new Object();
+			output.valoracion = valoracion;
+			output.calificacion = calificacion;			
+		firebase.database().ref('Usuarios').child(notificacion.dniprofe).child('Caracteristicas').child('Reseñas').push(output);
+	
+		var suma = 0;
+		var count = 0;
+		firebase.database().ref('Usuarios').child(notificacion.dniprofe).child('Caracteristicas').child('Reseñas').once('value').then(function(snapshot) {
+		snapshot.forEach(notificacionSnapshot => {
+			 var resenya = notificacionSnapshot.val();
+			suma = suma+ parseInt(resenya.calificacion);
+			count++;
+			
+		});
+		var result = suma / count;
+		
+		firebase.database().ref('Usuarios').child(notificacion.dniprofe).child('Caracteristicas').child("Valoracion").set(result);
+		});
+			firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
+		$('#modalValorar').modal('hide');
+	});
 	
 }
 

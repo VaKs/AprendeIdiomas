@@ -241,14 +241,21 @@ function mostrarInfoPerfil() {
 
 		document.getElementById('idiomas').innerHTML = listaIdiomas;
 
-		var listaReseñas = ""
-		var reseñas = valor.Caracteristicas.Reseñas;
+		
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Reseñas').once('value').then(function(snapshot) {
+		var listaResenyas = "";
+		
+		snapshot.forEach(notificacionSnapshot => {
+			
+			var resenya = notificacionSnapshot.val();
+			listaResenyas = listaResenyas + "<span> <i class='fa fa-star' aria-hidden='true'></i>  <i>" + resenya.valoracion+ " </i> </span> </br></br>";
+			
+		});
+		document.getElementById('reseñas').innerHTML= listaResenyas;
+		
+		});
 
-		for (var i in reseñas) {
-			listaReseñas = listaReseñas + "<span> <i class='fa fa-star' aria-hidden='true'></i>  <i>" + reseñas[i] + " </i> </span> </br></br>";
-		}
-
-		document.getElementById('reseñas').innerHTML = listaReseñas;
+	
 
 	});
 }

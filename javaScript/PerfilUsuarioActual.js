@@ -170,6 +170,7 @@ function iniciar_perfil() {
 
 }
 function pagaClase() {
+	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').once('value').then(function(snapshot) {
 		fecha = new Date();
 		mes = fecha.getMonth()+1;
@@ -179,12 +180,20 @@ function pagaClase() {
 		minuto = fecha.getMinutes()
 		
 		snapshot.forEach(claseSnapshot => {
+			
 			clase = claseSnapshot.val();
+			keyalumno = clase.claseKeyAlumno;
+			keyprofesor = clase.claseKeyProfe;
+			dnialumno = clase.solicitante;
+			dniprofe = clase.profesor;
 			keyClase = claseSnapshot.key;
+			
 			if(clase.dia==dia && clase.mes==mes && clase.anyo==year && clase.hora===hora+":"+minuto){
-				transaccionTokens(clase.dnialumno, clase.profesor, clase.precio);
-				crearValoracion(,clase.hora,clase.dia,clase.mes,clase.nombreProfe );
-				firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(keyClase).remove();
+			
+				transaccionTokens(clase.solicitante, clase.profesor, clase.precio);
+				crearValoracion(clase.hora,clase.dia,clase.mes,clase.solicitante,clase.nombreProfe,dniprofe,clase.idioma);
+				firebase.database().ref('Usuarios').child(dniprofe).child('clases').child(keyprofesor).remove();
+				firebase.database().ref('Usuarios').child(dnialumno).child('clases').child(keyalumno).remove();
 				
 			}
 			
@@ -195,15 +204,17 @@ function pagaClase() {
 }
 
 
-function crearValoracion(hora,dia,mes,profesor){
+function crearValoracion(hora,dia,mes,dnialumno,nombreProfe,dniprofe,idioma){
 	var output = new Object();
-			output.descripcion = "Valoracion";
+			output.descripcion = "Valora a "+nombreProfe+" y dinos que te ha parecido! ";
 			output.dia= dia;
 			output.mes=mes;
 			output.nombreProfe=nombreProfe;
 			output.hora = hora;
 			output.tipo = "rating";
-	firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
+			output.dniprofe = dniprofe;
+			output.idioma = idioma;
+	firebase.database().ref('Usuarios').child(dnialumno).child('notificaciones').push(output);
 	
 	
 }
