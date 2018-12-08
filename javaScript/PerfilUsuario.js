@@ -40,9 +40,10 @@ $( document ).ready(function() {
 
 		document.getElementById('idiomas').innerHTML= listaIdiomas;
 
+		var url = window.location.href;
+		var dniUsuario=url.substring(url.lastIndexOf('?')+1);
 		
-		
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('Caracteristicas').child('Reseñas').once('value').then(function(snapshot) {
+		firebase.database().ref('Usuarios').child(dniUsuario).child('Caracteristicas').child('Reseñas').once('value').then(function(snapshot) {
 		var listaResenyas = "";
 		
 		snapshot.forEach(notificacionSnapshot => {
