@@ -12,7 +12,25 @@ function iniciar_perfil() {
 
 		});
 
+		$('#idiomasSelectMod').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay idiomas seleccionados',
+			nSelectedText: ' Idiomas seleccionados',
+			numberDisplayed: 1,
+
+		});
+
 		$('#horasLunes').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
+		$('#horasLunesMod').multiselect({
 			buttonWidth: '100%',
 
 			nonSelectedText: 'No hay horas selecionadas',
@@ -30,7 +48,25 @@ function iniciar_perfil() {
 
 		});
 
+		$('#horasMartesMod').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
 		$('#horasMiercoles').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
+		$('#horasMiercolesMod').multiselect({
 			buttonWidth: '100%',
 
 			nonSelectedText: 'No hay horas selecionadas',
@@ -48,7 +84,25 @@ function iniciar_perfil() {
 
 		});
 
+		$('#horasJuevesMod').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
 		$('#horasViernes').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
+		$('#horasViernesMod').multiselect({
 			buttonWidth: '100%',
 
 			nonSelectedText: 'No hay horas selecionadas',
@@ -66,7 +120,25 @@ function iniciar_perfil() {
 
 		});
 
+		$('#horasSabadoMod').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
 		$('#horasDomingo').multiselect({
+			buttonWidth: '100%',
+
+			nonSelectedText: 'No hay horas selecionadas',
+			nSelectedText: ' Horas seleccionadas',
+			numberDisplayed: 1,
+
+		});
+
+		$('#horasDomingoMod').multiselect({
 			buttonWidth: '100%',
 
 			nonSelectedText: 'No hay horas selecionadas',
@@ -85,13 +157,14 @@ function iniciar_perfil() {
 
 	});
 
-
+	mostrarClasesAcordadas();
 	comprobarSesion();
 	mostrarInfoPerfil();
 	mostrarPremium(localStorage['dni']);
 	listar_notificaciones();
 	calendario();
 	verificarBotonCrearAnuncio();
+	//verificarBotonModificarAnuncio();
 	pagaClase();
 	setInterval(pagaClase, 60000);
 

@@ -56,32 +56,21 @@ function guardarValoracion(){
 }
 
 function aceptar_clase(key){
+	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).child('estado').set('aceptada');
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
 		
-		var clase = new Object();
-		clase.dnialumno = notificacion.solicitante;
-		clase.dia = notificacion.dia;
-		clase.mes = notificacion.mes;
-		clase.anyo = notificacion.anyo;
-		clase.hora = notificacion.hora;
-		clase.idioma = notificacion.idioma;
-		clase.precio = notificacion.precio;
-		clase.profesor = notificacion.profesor;
-		clase.nombreProfe = notificacion.nombreProfe;
-		clase.nombreSolicitante=notificacion.nombreSolicitante;
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').push(clase);
-		firebase.database().ref('Usuarios').child(clase.dnialumno).child('clases').push(clase);
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(notificacion.claseKeyProfe).child("estado").set("aceptada");
+		firebase.database().ref('Usuarios').child(notificacion.solicitante).child('clases').child(notificacion.claseKeyAlumno).child("estado").set("aceptada");
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
 		var notificacionAceptacion = new Object();
 		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		notificarUsuario(notificacion.solicitante,notificacionAceptacion);
-		
-		notificacionAceptacion.descripcion = "Se ha aceptado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
 		notificarUsuario(notificacion.profesor,notificacionAceptacion);
 		
 		calendario();
+		mostrarClasesAcordadas();
 	});
 }
 
@@ -89,16 +78,66 @@ function rechazar_clase(key){
 	firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).once('value').then(function(snapshot) {
 		var notificacion = snapshot.val();
 		var idhorario=notificacion.idHorario;
+		var claseKeyProfe=notificacion.claseKeyProfe;
+		var claseKeyAlumno = notificacion.claseKeyAlumno;
+		var dniAlumno=notificacion.solicitante;
 		var notificacionRechazada = new Object();		
 		notificacionRechazada.descripcion = "Se ha rechazado la solicitud para la clase de "+notificacion.idioma+" en fecha: "+notificacion.dia+"/"+notificacion.mes+"/"+notificacion.anyo+"-"+notificacion.hora;
-		
 		notificarUsuario(notificacion.solicitante,notificacionRechazada);
 
-		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).child('estado').set('rechazada');
 		firebase.database().ref('Usuarios').child(localStorage['dni']).child('notificaciones').child(key).remove();
+		firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(claseKeyAlumno).remove();
+		firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(claseKeyProfe).remove();
 		firebase.database().ref('Anuncios').child(localStorage['dni']).child("horario").child(idhorario).child("estado").set("disponible");
+		
+		calendario();
+		mostrarClasesAcordadas();
 	});	
 }
+
+
+function cancelar_clase(key){
+	
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(key).once('value').then(function(snapshot) {
+		
+		clase = snapshot.val();
+		dniAlumno=clase.solicitante;
+		dniProfe=clase.profesor;
+		idHorario=clase.idHorario;
+		notificacion=new Object();
+		notificacion.descripcion="Se ha cancelado la clase de "+clase.idioma+" de la fecha "+clase.dia+"/"+clase.mes+"/"+clase.anyo+" a las "+clase.hora;
+		
+		notificarUsuario(dniProfe,notificacion);
+		notificarUsuario(dniAlumno,notificacion);
+		firebase.database().ref('Anuncios').child(dniProfe).child("horario").child(idHorario).child("estado").set("disponible");
+		firebase.database().ref('Usuarios').child(dniAlumno).child('clases').child(clase.claseKeyAlumno).remove();
+		firebase.database().ref('Usuarios').child(dniProfe).child('clases').child(clase.claseKeyProfe).remove();
+		mostrarClasesAcordadas();
+		calendario();
+	});	
+
+}
+
+function mostrarClasesAcordadas(){
+	
+
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child("clases").on('value', function(snapshot){
+		$('#containerCancelados').html("");
+		
+		snapshot.forEach(Clasesvalor => {
+			 key = Clasesvalor.key;
+			 clase = Clasesvalor.val();
+			 if(clase.estado=="aceptada"){
+			 output = clase.idioma+" de la fecha "+clase.dia+"/"+clase.mes+"/"+clase.anyo+" a las "+clase.hora;
+			$('#containerCancelados').append("<li>"+output+"<br><button id='botonrechazar' class='btn btn-danger' onclick='cancelar_clase(\""+key+"\")'>Cancelar Clase</button></li>");
+			 }
+		});
+		
+	});
+	
+}
+	
+	
 
 var resolve;
 function comprarTokens(){
@@ -128,7 +167,9 @@ function comprarTokens(){
 		
 }
 
+
 /*function retirarDinero(){
+
 	
 	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
