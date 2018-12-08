@@ -110,7 +110,9 @@ function pagaClase() {
 			keyClase = claseSnapshot.key;
 			if(clase.dia==dia && clase.mes==mes && clase.anyo==year && clase.hora===hora+":"+minuto){
 				transaccionTokens(clase.dnialumno, clase.profesor, clase.precio);
+				crearValoracion(,clase.hora,clase.dia,clase.mes,clase.nombreProfe );
 				firebase.database().ref('Usuarios').child(localStorage['dni']).child('clases').child(keyClase).remove();
+				
 			}
 			
 			
@@ -118,4 +120,21 @@ function pagaClase() {
 
 	});
 }
+
+
+function crearValoracion(hora,dia,mes,profesor){
+	var output = new Object();
+			output.descripcion = "Valoracion";
+			output.dia= dia;
+			output.mes=mes;
+			output.nombreProfe=nombreProfe;
+			output.hora = hora;
+			output.tipo = "rating";
+	firebase.database().ref('Usuarios').child(profe).child('notificaciones').push(output);
+	
+	
+}
+
+
+
 	

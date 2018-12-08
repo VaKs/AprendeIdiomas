@@ -17,13 +17,22 @@ function listar_notificaciones(){
 				output =output+ "<li><i>"+ notificacion.descripcion + "</i></li>";
 			}
 			else{
+				if(notificacion.tipo == "rating"){
+				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
 
+				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
+				"<br><button id='botonaceptar' class='btn btn-success' onclick='sacarValoracion(\""+key+"\")'>Valorar</button> "
+				output = output + "</strong>";
+				
+				}	
+				else{
 				output =output+ "</br> <strong style='color:#167da7'> <i class='fa fa-exclamation-triangle' aria-hidden='true'></i>"+ notificacion.descripcion;
 
 				output = output + ": " + notificacion.dia +"/"+notificacion.mes+"/"+notificacion.anyo+" a las  "+ notificacion.hora +" de " + notificacion.idioma + " por " + notificacion.solicitante +
 				"<br><button id='botonaceptar' class='btn btn-success' onclick='aceptar_clase(\""+key+"\")'>Aceptar</button> "+
 				"<button id='botonrechazar' class='btn btn-danger' onclick='rechazar_clase(\""+key+"\")'>Rechazar</button> </br></br>";
 				output = output + "</strong>";
+				}
 			}
 		});
 
@@ -31,6 +40,18 @@ function listar_notificaciones(){
 		output = output + "";
 		document.getElementById('container1').innerHTML = output;
 	});
+	
+}
+function sacarValoracion(key){
+	$('#modalValorar').modal({ backdrop: 'static', keyboard: false })
+	$('#modalValorar').modal('show');	
+}
+function guardarValoracion(){
+	var valoracion = document.getElementById("Valoracion").value;
+	var calificacion = document.getElementById("calificacion").value;
+
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('caracteristicas').child('reseña').set(valoracion);
+	firebase.database().ref('Usuarios').child(localStorage['dni']).child('caracteristicas').child('valoracion').set(calificacion);
 	
 }
 
@@ -107,7 +128,7 @@ function comprarTokens(){
 		
 }
 
-//function retirarDinero(){
+/*function retirarDinero(){
 	
 	
 	firebase.database().ref('Usuarios').child(localStorage['dni']).on('value',function(dato) {
@@ -140,7 +161,7 @@ function comprarTokens(){
 	});	
 		
 
-}
+}*/
 
 function notificarUsuario(dni,notificacion){
 	firebase.database().ref('Usuarios').child(dni).child('notificaciones').push(notificacion);
