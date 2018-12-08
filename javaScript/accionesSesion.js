@@ -342,9 +342,9 @@ function crearAnuncio() {
 			horario: listaHorarioArg
 		});
 
-		swal("Exito", "Anuncio creado exitosamente", "success").then(function () {
-			location.reload(true)
-		})
+
+		location.reload(true);
+
 
 	}
 }
@@ -361,12 +361,14 @@ function verificarBotonCrearAnuncio() {
 		}
 
 		if (cont > 0) {
-			document.getElementById("btnCrearAnuncio").disabled = true;
-			document.getElementById("btnModificarAnuncio").disabled = false;
+			//document.getElementById("btnCrearAnuncio").disabled = true;
+			//document.getElementById("btnModificarAnuncio").disabled = false;
+			document.getElementById('botonCrearModificar').innerHTML = "<button style='width:100%' id='btnModificarAnuncio' class='btn btn-primary' onclick='openModalModificarAnuncio()'> <i class='fa fa-pencil' aria-hidden='true'></i>&nbsp;Modificar anuncio</button>";
 		}
 		else {
-			document.getElementById("btnCrearAnuncio").disabled = false;
-			document.getElementById("btnModificarAnuncio").disabled = true;
+			document.getElementById('botonCrearModificar').innerHTML = "<button style='width:100%' id='btnCrearAnuncio' class='btn btn-primary' onclick='openModalCrearAnuncio()'> <i class='fa fa-newspaper-o' aria-hidden='true'></i>&nbsp;Crear anuncio</button>";
+			//document.getElementById("btnCrearAnuncio").disabled = false;
+			//document.getElementById("btnModificarAnuncio").disabled = true;
 		}
 
 	});
@@ -837,18 +839,15 @@ function guardarModificacion() {
 
 		$('#modalModificarAnuncio').modal('hide');
 
-		swal("Exito", "Anuncio modificado exitosamente", "success").then(function () {
-			location.reload(true)
-		})
+		location.reload(true);
 
 	}
 	else {
 		if (listaIdiomaPrecio.length == 0) {
 			$('#modalModificarAnuncio').modal('hide');
 
-			swal("Exito", "Se elimino el anuncio", "success").then(function () {
-				location.reload(true)
-			})
+			location.reload(true);
+	
 		}
 	}
 }
