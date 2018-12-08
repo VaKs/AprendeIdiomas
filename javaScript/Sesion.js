@@ -47,6 +47,8 @@ function SignUp(mode){
 			+'<input id= "nombre" type="text" placeholder="Nombre"/>'
 			+'<input id= "apellidos" type="text" placeholder="Apellidos"/>'
 			+'<input id= "localidad" type="text" placeholder="Localidad"/>'
+			+'<input id= "estudios" type="text" placeholder="Estudios"/>'
+			+'<input id= "descripcion" type="text" placeholder="Descripcion"/>'
 			+'<button style="background: #4CAF50;" id="prueba2" onclick="SignUp(true)">regístrate</button>';
 		document.getElementById('form').innerHTML = form;
 	} else {
@@ -65,7 +67,6 @@ function SignUp(mode){
 						email: document.getElementById('email').value,
 						nombre: document.getElementById('nombre').value,
 						apellido: document.getElementById('apellidos').value,
-						localidad: document.getElementById('localidad').value,
 						premium: false,
 						tokens: 0
 					}, function(error) {
@@ -79,6 +80,11 @@ function SignUp(mode){
 							});
 					    }
 					});
+				usuarios.child(usuario).child('Caracteristicas').set({
+					Localidad: document.getElementById('localidad').value,
+					Estudios: document.getElementById('estudios').value,
+					Descripcion: document.getElementById('descripcion').value
+				});
 				} else {
 					swal("Error","Ya existe el usuario","error");
 				}
