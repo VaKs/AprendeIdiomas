@@ -1,7 +1,9 @@
 $( document ).ready(function() {
 	mostrarAnuncios();
 });
+var fechaSeleccionada=false;
 function mostrarAnuncios(pidioma,pnivel ){
+	fechaSeleccionada=false;
 	firebase.database().ref('Anuncios').on('value',function(snapshot) {
 		var cantidad_anuncios = 0;
 
@@ -29,7 +31,7 @@ function mostrarAnuncios(pidioma,pnivel ){
 					if(idioma == pidioma && nivel == pnivel){pasafiltro = true;}
 					anuncioOutput = anuncioOutput+"<label class='container'><b style='color:#f2f2f2;'>A</b>"+idioma+" nivel: "+nivel+", precio: "+coste+" tokens";
 
-						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value='"+idioma+"'><input id='nivel_"+dniProfe+"' type='hidden' value='"+nivel+"'>";
+						anuncioOutput = anuncioOutput+"<input type='radio' name='idioma_"+dniProfe+"' value='"+idioma+"'><input id='nivel_"+dniProfe+"' type='hidden' value='"+nivel+"'><input id='precio_"+dniProfe+"' type='hidden' value='"+coste+"'>";
 					
 						anuncioOutput = anuncioOutput+"<span class='checkmark'></span>";
 					anuncioOutput = anuncioOutput+"</label>";
@@ -82,6 +84,7 @@ function seleccionarDia(dni,dia,mes,anyo){
 				var hora = horario.hora;
 				$("#horario_"+dni).append(new Option(hora, idHorario));	
 				document.getElementById("txtHorario_"+dni).innerHTML = "Horario disponible para "+fecha+":";
+				fechaSeleccionada=true;
 			}
 		});
 	
@@ -100,6 +103,8 @@ function solicitarClase(profe,nombreProfe){
 				var idiomaSele = input_radio[x].value;
 				var nivel = "nivel_"+profe;
 				var IdiomaNiv = document.getElementById(nivel).value;
+				var idprecio="precio_"+profe;
+				var precio = document.getElementById(idprecio).value;
 				
 			}
 		}
@@ -132,10 +137,10 @@ function solicitarClase(profe,nombreProfe){
 			output.nombreProfe=nombreProfe;
 			output.idHorario= idhorario;
 			output.nombreSolicitante=localStorage['nombre'];
-			output.precio = 10; //to do			
+			output.precio = precio;		
 		
 	
-		if((idiomaSele != undefined) && (horario != "")){
+		if((idiomaSele != undefined) && (horario != "") && fechaSeleccionada){
 				const refProfe = firebase.database().ref('Usuarios').child(profe).child('clases').push(output);
 				const claseKeyProfe = refProfe.key;
 

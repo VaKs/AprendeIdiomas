@@ -148,7 +148,7 @@ function promocionarUsuario() {
 	
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
 			firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
-			
+			mostrarPremium(localStorage['dni']);
 
 		} else {
 			swal("Error","No tienes suficientes tokens.","error");
