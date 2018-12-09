@@ -295,7 +295,7 @@ function calendarioAnuncio(dni, paramMes, paramYear, selection) {
 								tabla = (tabla + "<td id='doyClase' onclick='seleccionarDia(\"" + dni + "\",\"" + a + "\",\"" + (mes + 1) + "\",\"" + year + "\")'>" + a + "</td>");
 								doyClase = false;
 							} else {
-								tabla = (tabla + "<td>" + a + "</td>");
+								tabla = (tabla + "<td id='finDe'>" + a + "</td>");
 							}
 						} else {
 							if (doyClase) {
