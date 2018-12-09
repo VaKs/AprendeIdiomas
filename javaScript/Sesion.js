@@ -29,6 +29,7 @@ function SignIn(){
 				localStorage['password'] = document.getElementById('contrasena').value;
 				localStorage['nombre'] = usuarioActual.nombre;
 				location.reload();
+				window.location.href = "./web/perfilUsuario.html";
 			} else {
 				swal("Error","La contraseña es incorrecta","error");
 			}
