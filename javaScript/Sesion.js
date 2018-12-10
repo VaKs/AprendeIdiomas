@@ -117,45 +117,43 @@ function promocionarUsuario() {
 	var premium;
 	firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function(snapshot) {
 		premium = snapshot.val().premium;
-		});
 		
-	if(premium) {
+		
+		if(premium) {
 			swal("Error","Ya esta asociado a la cuenta premium","error");
-			
-		
-	
 		}else{
 			
-	//Consulta los tokens del usuario
-	let tokens = new Promise((resolve, reject) => {
-		firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function (snapshot) {
-			usuarioActual = snapshot.val();
-			resolve(parseInt(usuarioActual.tokens));
-		});
-	});
-
-	//Una vez se han consultado, se restan 5 tokens y se convierte el anuncio en premium
-	tokens.then((res) => {
-		if (res >= 5) {
-			
-			
-			firebase.database().ref('Anuncios').child(localStorage['dni']).once('value', function (snapshot) {
-
-				if(snapshot.val() != null){
-					firebase.database().ref('Anuncios').child(localStorage['dni']).child('premium').set(true);
-				}
-				
+			//Consulta los tokens del usuario
+			let tokens = new Promise((resolve, reject) => {
+				firebase.database().ref('Usuarios').child(localStorage['dni']).once('value', function (snapshot) {
+					usuarioActual = snapshot.val();
+					resolve(parseInt(usuarioActual.tokens));
+				});
 			});
-	
-			firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
-			firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
-			mostrarPremium(localStorage['dni']);
 
-		} else {
-			swal("Error","No tienes suficientes tokens.","error");
+			//Una vez se han consultado, se restan 5 tokens y se convierte el anuncio en premium
+			tokens.then((res) => {
+				if (res >= 5) {
+					
+					
+					firebase.database().ref('Anuncios').child(localStorage['dni']).once('value', function (snapshot) {
+
+						if(snapshot.val() != null){
+							firebase.database().ref('Anuncios').child(localStorage['dni']).child('premium').set(true);
+						}
+						
+					});
+			
+					firebase.database().ref('Usuarios').child(localStorage['dni']).child('tokens').set(res - 5);
+					firebase.database().ref('Usuarios').child(localStorage['dni']).child('premium').set(true);
+					mostrarPremium(localStorage['dni']);
+
+				} else {
+					swal("Error","No tienes suficientes tokens.","error");
+				}
+			});
 		}
 	});
-	}
 	
 	
 }
