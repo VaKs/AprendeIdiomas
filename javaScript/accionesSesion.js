@@ -33,6 +33,8 @@ function guardarEditarPerfil() {
 		if (snapshot.val() != null) {
 			firebase.database().ref('Anuncios').child(localStorage['dni']).child('nombre').set(nombreNuevo + ' ' + apellidoNuevo);
 		}
+		
+		location.reload(true);
 
 	});
 
